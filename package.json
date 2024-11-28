@@ -1,0 +1,23 @@
+{
+  "name": "enmav3",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "commandkit dev",
+    "build": "commandkit build",
+    "start": "commandkit start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.7.8",
+    "canvacord": "^6.0.2",
+    "commandkit": "^0.1.10",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.8.3",
+    "pretty-ms": "^9.2.0"
+  }
+}

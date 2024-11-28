@@ -1,0 +1,45 @@
+require('dotenv/config');
+
+const { Client, IntentsBitField, ActivityType } = require('discord.js');
+const { CommandKit } = require('commandkit');
+const { join } = require('path');
+
+const mongoose = require('mongoose');
+
+const client = new Client({
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent,
+    ],
+});
+
+new CommandKit({
+    client,
+    eventsPath: join(__dirname, 'events'),
+    commandsPath: join(__dirname, 'commands'),
+    devUserIds: ['944060279082340433'],
+    devGuildIds: ['872260926055776267'],
+    bulkRegister: true,
+
+});
+
+mongoose.set('strictQuery', false);
+await mongoose.connect(process.env.MONGO_URI);
+
+client.login(process.env.TOKEN).then(() => {
+    const activities = [
+        { name: 'Version 2 soon. 🚀', type: ActivityType.Watching },
+        { name: 'Economy system in progress. 🚀', type: ActivityType.Watching },
+        { name: `${client.guilds.cache.size} servers. 🚀`, type: ActivityType.Watching },
+    ];
+
+    let i = 0;
+    setInterval(() => {
+        const activity = activities[i];
+        client.user.setActivity(activity.name, { type: activity.type });
+        i = ++i % activities.length;
+    }, 30000);
+
+});;
