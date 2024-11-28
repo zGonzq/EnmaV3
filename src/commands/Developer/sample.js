@@ -9,6 +9,7 @@ module.exports = {
     */
     run: async ({ interaction, client, handler }) => {
         interaction.reply({ content: 'Sample command', ephemeral: true });
+        //comentario
     },
 
     /** @type {import('commandkit').CommandOptions} */
