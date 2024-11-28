@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const economy = require('../../models/economy');
 module.exports = {
     /** @type {import('commandkit').CommandData}  */
     data: new SlashCommandBuilder()
