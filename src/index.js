@@ -33,6 +33,7 @@ client.login(process.env.TOKEN).then(() => {
         { name: 'Version 2 soon. 🚀', type: ActivityType.Watching },
         { name: 'Economy system in progress. 🚀', type: ActivityType.Watching },
         { name: `${client.guilds.cache.size} servers. 🚀`, type: ActivityType.Watching },
+        { name: 'Developed by @zGonzq 🚀', type: ActivityType.Watching },
     ];
 
     let i = 0;
