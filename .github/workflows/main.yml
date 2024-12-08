@@ -3,40 +3,19 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+  
 jobs:
   run_pull:
-    name: Pull and Build
+    name: run pull
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Install SSH keys
+    - name: install ssh keys
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-        
-    - name: Connect, Pull, and Build
-      run: |
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
-          # Navegar al directorio del proyecto
-          cd ${{ secrets.WORK_DIR }} &&
-          
-          # Asegurarse de estar en la rama correcta y actualizar el código
-          git checkout ${{ secrets.MAIN_BRANCH }} &&
-          git pull &&
-          
-          # Verificar si npm está instalado, si no, instalar Node.js
-          if ! command -v npm &> /dev/null; then
-            echo 'npm no encontrado. Instalando Node.js...' &&
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&
-            sudo apt install -y nodejs
-          fi &&
-          
-          # Instalar dependencias y construir el proyecto
-          npm install &&
-          npm run build
-        "
-        
-    - name: Cleanup
+    - name: connect and pull
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
+    - name: cleanup
       run: rm -rf ~/.ssh
