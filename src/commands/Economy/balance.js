@@ -60,6 +60,8 @@ module.exports = {
         }
     };
 
+//asda
+
     const cooldowns = [
         { name: 'Daily', value: getCooldownStatus(data.lastDaily, 'daily') },
         { name: 'Work', value: getCooldownStatus(data.lastWork, 'half-hour') },
