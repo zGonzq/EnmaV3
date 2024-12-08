@@ -5,3 +5,4 @@ module.exports = (client) => {
     console.log(`Activo en: ${client.guilds.cache.size} servidores`);
     console.log(`${client.user.tag} está listo`);
 };
+

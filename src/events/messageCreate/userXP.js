@@ -3,9 +3,6 @@ const Level = require('../../models/levels');
 const calc = require('../../utils/calc');
 const cooldowns = new Set();
 
-
-
-
 function getXpRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);

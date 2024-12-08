@@ -43,6 +43,15 @@ module.exports = {
     if (member.roles.cache.has(role.id)) {
       return interaction.reply({ embeds: [embed.setDescription('Ya tienes este rol.').setColor('Red')] });
     }
+    
+    const botMember = interaction.guild.members.cache.get(interaction.client.user.id);
+    if (role.position >= botMember.roles.highest.position) {
+      return interaction.reply({ embeds: [embed.setDescription('No puedo asignar un rol que está igual o por encima de mi rol más alto.').setColor('Red')] });
+    }
+
+    if (!role.editable) {
+      return interaction.reply({ embeds: [embed.setDescription('No tengo permisos para asignar este rol.').setColor('Red')] });
+    }
 
     economyData.balance -= roleToBuy.price;
     await economyData.save();
