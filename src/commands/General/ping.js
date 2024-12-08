@@ -16,7 +16,7 @@ module.exports = {
 
     const embed = new EmbedBuilder();
     embed.setTitle('Pong! 🏓');
-    embed.setDescription(`Latencia: ${ping}ms.\nWebsocket: ${client.ws.ping}ms. esomesmo`);
+    embed.setDescription(`Latencia: ${ping}ms.\nWebsocket: ${client.ws.ping}ms.`);
     embed.setColor('Random');
 
     interaction.editReply({
