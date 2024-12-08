@@ -4,20 +4,9 @@ const Shop = require('../../models/shop');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('setshop')
-    .setDescription('Configura los roles disponibles en la tienda')
-    .setDefaultMemberPermissions([PermissionsBitField.Administrator])
-    .addRoleOption(option => option.setName('rol1').setDescription('Primer rol').setRequired(true))
-    .addIntegerOption(option => option.setName('precio1').setDescription('Precio del primer rol').setRequired(true))
-    .addRoleOption(option => option.setName('rol2').setDescription('Segundo rol').setRequired(false))
-    .addIntegerOption(option => option.setName('precio2').setDescription('Precio del segundo rol').setRequired(false))
-    .addRoleOption(option => option.setName('rol3').setDescription('Tercer rol').setRequired(false))
-    .addIntegerOption(option => option.setName('precio3').setDescription('Precio del tercer rol').setRequired(false))
-    .addRoleOption(option => option.setName('rol4').setDescription('Cuarto rol').setRequired(false))
-    .addIntegerOption(option => option.setName('precio4').setDescription('Precio del cuarto rol').setRequired(false))
-    .addRoleOption(option => option.setName('rol5').setDescription('Quinto rol').setRequired(false))
-    .addIntegerOption(option => option.setName('precio5').setDescription('Precio del quinto rol').setRequired(false))
-    .addRoleOption(option => option.setName('rol6').setDescription('Sexto rol').setRequired(false))
-    .addIntegerOption(option => option.setName('precio6').setDescription('Precio del sexto rol').setRequired(false)),
+    .setDescription('Agrega un rol a la tienda')
+    .addRoleOption(option => option.setName('role').setDescription('Rol a agregar').setRequired(true))
+    .addIntegerOption(option => option.setName('price').setDescription('Precio del rol').setRequired(true)),
 
   run: async ({ interaction }) => {
     const embed = new EmbedBuilder();
@@ -29,28 +18,22 @@ module.exports = {
       return interaction.reply({ embeds: [embed.setDescription('No tienes permisos para usar este comando.').setColor('Red')] });
     }
 
-    const roles = [];
-    for (let i = 1; i <= 6; i++) {
-      const role = interaction.options.getRole(`rol${i}`);
-      const price = interaction.options.getInteger(`precio${i}`);
-      if (role && price) {
-        roles.push({ id: role.id, price });
-      }
-    }
-
-    if (roles.length === 0) {
-      return interaction.reply({ embeds: [embed.setDescription('Debes proporcionar al menos un rol y su precio.').setColor('Red')] });
-    }
+    const role = interaction.options.getRole('role');
+    const price = interaction.options.getInteger('price');
 
     let shopData = await Shop.findOne({ guildId: interaction.guild.id });
     if (!shopData) {
-      shopData = new Shop({ guildId: interaction.guild.id, roles });
-    } else {
-      shopData.roles = roles;
+      shopData = new Shop({ guildId: interaction.guild.id, roles: [] });
     }
 
+    if (shopData.roles.length >= 10) {
+      return interaction.reply({ embeds: [embed.setDescription('No puedes agregar más de 10 roles a la tienda.').setColor('Red')] });
+    }
+
+    shopData.roles.push({ id: role.id, price });
     await shopData.save();
-    embed.setTitle('Tienda Configurada').setDescription('La tienda ha sido configurada exitosamente.').setColor('Green');
+
+    embed.setTitle('Rol Agregado').setDescription(`El rol <@&${role.id}> ha sido agregado a la tienda por ${price} monedas.`).setColor('Green');
     interaction.reply({ embeds: [embed] });
   },
 };

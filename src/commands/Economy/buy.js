@@ -6,7 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('buy')
     .setDescription('Compra un rol de la tienda')
-    .addIntegerOption(option => option.setName('roleid').setDescription('ID del rol que deseas comprar').setRequired(true)),
+    .addIntegerOption(option => option.setName('roleindex').setDescription('Número del rol que deseas comprar (1-10)').setRequired(true)),
 
   run: async ({ interaction }) => {
     const embed = new EmbedBuilder();
@@ -14,15 +14,19 @@ module.exports = {
       return interaction.reply({ embeds: [embed.setDescription('Este comando solo está disponible en servidores.').setColor('Red')] });
     }
 
-    const roleId = interaction.options.getInteger('roleid');
+    const roleIndex = interaction.options.getInteger('roleindex');
+    if (roleIndex < 1 || roleIndex > 10) {
+      return interaction.reply({ embeds: [embed.setDescription('Número de rol inválido. Debe estar entre 1 y 10.').setColor('Red')] });
+    }
+
     const shopData = await Shop.findOne({ guildId: interaction.guild.id });
     if (!shopData || !shopData.roles || shopData.roles.length === 0) {
       return interaction.reply({ embeds: [embed.setDescription('No hay roles disponibles en la tienda.').setColor('Red')] });
     }
 
-    const roleToBuy = shopData.roles[roleId - 1];
+    const roleToBuy = shopData.roles[roleIndex - 1];
     if (!roleToBuy) {
-      return interaction.reply({ embeds: [embed.setDescription('ID de rol inválido.').setColor('Red')] });
+      return interaction.reply({ embeds: [embed.setDescription('Número de rol inválido.').setColor('Red')] });
     }
 
     const economyData = await Economy.findOne({ userId: interaction.user.id, guildId: interaction.guild.id });

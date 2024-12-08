@@ -108,7 +108,7 @@ module.exports = {
             data.balance += fish.price;
             await data.save();
 
-            return interaction.reply({ embeds: [embed.setTitle('Pesca exitosa').setDescription(`Has pescado un ${fish.name} (${fish.rarity}) y ganado ${fish.price} monedas. Ahora tienes ${data.balance} monedas.`).setColor(embedColors.find(color => color.rarity === fish.rarity).color)] });
+            return interaction.reply({ embeds: [embed.setTitle('Pesca exitosa').setDescription(`Has pescado un ${fish.name} (${fish.rarity}) y ganado ${fish.price} monedas. Ahora tienes ${data.balance} monedas.`).setImage('https://media4.giphy.com/media/2VOB4tK9qsQ7efC2Ub/200w.gif?cid=6c09b9522cvz524dmxgp8s3vlkgrslw37lmdmu6wqhgnbit9&ep=v1_gifs_search&rid=200w.gif&ct=g').setColor(embedColors.find(color => color.rarity === fish.rarity).color)] });
         } else {
             const failMessage = failMessages[Math.floor(Math.random() * failMessages.length)];
             return interaction.reply({ embeds: [embed.setTitle('Pesca fallida').setDescription(`${failMessage} No has ganado ninguna moneda.`).setColor('Red')] });
