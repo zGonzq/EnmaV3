@@ -6,29 +6,24 @@ on:
 
 jobs:
   run_pull:
-    name: Pull and Build
+    name: run pull and build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install SSH keys
+    - name: install ssh keys
       run: |
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
         
-    - name: Connect, Pull, and Build
+    - name: connect, pull, and build
       run: |
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
           cd ${{ secrets.WORK_DIR }} &&
           git checkout ${{ secrets.MAIN_BRANCH }} &&
           git pull &&
-          if ! command -v npm &> /dev/null; then
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&
-            sudo apt install -y nodejs
-          fi &&
-          npm install &&
           npm run build
         "
         
-    - name: Cleanup
+    - name: cleanup
       run: rm -rf ~/.ssh
