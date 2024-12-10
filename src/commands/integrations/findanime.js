@@ -27,7 +27,6 @@ module.exports = {
 
       embed.setTitle(result.anilist.title.romaji)
         .setDescription(result.anilist.title.native)
-        .setImage(result.image)
         .setFooter({ text: `Similitud: ${similarityPercentage}%` })
         .addFields(
           { name: 'Título en inglés', value: result.anilist.title.english || 'No disponible', inline: true },
