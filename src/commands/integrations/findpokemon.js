@@ -34,11 +34,11 @@ module.exports = {
           { name: 'Peso', value: `${pokemon.weight / 10} kg`, inline: true },
           { name: 'Tipos', value: pokemon.types.map(type => type.type.name).join(', '), inline: true },
           { name: 'Habilidades', value: pokemon.abilities.map(ability => ability.ability.name).join(', '), inline: true },
-          { name: 'Experiencia base', value: pokemon.base_experience.toString(), inline: true },
           { name: 'Movimientos', value: pokemon.moves.slice(0, 5).map(move => move.move.name).join(', '), inline: false },
           { name: 'Hábitat', value: species.habitat ? species.habitat.name : 'Desconocido', inline: true },
           { name: 'Color', value: species.color.name, inline: true },
-          { name: 'Forma', value: species.shape.name, inline: true }
+          { name: 'Forma', value: species.shape.name, inline: true },
+          { name: 'Descripción', value: species.flavor_text_entries.find(entry => entry.language.name === 'es').flavor_text, inline: false }
         )
         .setColor('Random');
 
