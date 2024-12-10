@@ -31,7 +31,9 @@ module.exports = {
           { name: 'Peso', value: `${pokemon.weight / 10} kg`, inline: true },
           { name: 'Tipos', value: pokemon.types.map(type => type.type.name).join(', '), inline: true },
           { name: 'Habilidades', value: pokemon.abilities.map(ability => ability.ability.name).join(', '), inline: true },
-          { name: 'Estadísticas', value: pokemon.stats.map(stat => `${stat.stat.name}: ${stat.base_stat}`).join('\n'), inline: false }
+          { name: 'Experiencia base', value: pokemon.base_experience.toString(), inline: true },
+          { name: 'Movimientos', value: pokemon.moves.slice(0, 5).map(move => move.move.name).join(', '), inline: false },
+          { name: 'Juego(s) de origen', value: pokemon.game_indices.map(game => game.version.name).join(', '), inline: false }
         )
         .setColor('Random');
 
