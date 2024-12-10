@@ -19,6 +19,8 @@ module.exports = {
     const embed = new EmbedBuilder();
     const imageAttachment = interaction.options.getAttachment('imagen');
 
+    await interaction.reply({ content: 'Estoy buscando el anime, un momento...'});
+
     try {
       const response = await axios.get(`https://api.trace.moe/search?anilistInfo&url=${encodeURIComponent(imageAttachment.url)}`);
       const result = response.data.result[0];
@@ -27,6 +29,7 @@ module.exports = {
 
       embed.setTitle(result.anilist.title.romaji)
         .setDescription(result.anilist.title.native)
+        .setImage(result.image)
         .setFooter({ text: `Similitud: ${similarityPercentage}%` })
         .addFields(
           { name: 'Título en inglés', value: result.anilist.title.english || 'No disponible', inline: true },
@@ -36,11 +39,11 @@ module.exports = {
         )
         .setColor('Random');
 
-      await interaction.reply({ embeds: [embed] });
+      await interaction.editReply({ content: '', embeds: [embed] });
 
     } catch (error) {
       console.log('Error al obtener la información del anime:', error);
-      await interaction.reply({ content: 'No se pudo encontrar información sobre el anime. Inténtalo de nuevo más tarde.', ephemeral: true });
+      await interaction.editReply({ content: 'No se pudo encontrar información sobre el anime. Inténtalo de nuevo más tarde.', ephemeral: true });
     }
   },
 };
