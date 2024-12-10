@@ -42,7 +42,7 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
 
     } catch (error) {
-      console.log('Error al obtener los datos del clima:', error);
+      console.log(`Error al obtener datos climáticos de la ciudad ${city}.`);
       await interaction.reply({ content: `No se pudieron encontrar datos climáticos sobre la ciudad **${city}**.`, ephemeral: true });
     }
   },
