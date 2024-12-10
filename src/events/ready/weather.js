@@ -42,7 +42,7 @@ module.exports = async (client) => {
             messageToUpdate.edit({ embeds: [embed] });
             }
         } catch (error) {
-            console.log('Error al obtener los datos del clima:', error);
+            console.log('Error al obtener los datos del clima.');
         }
     }, 30000);
 }
