@@ -23,6 +23,9 @@ module.exports = {
       const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonNameOrId.toLowerCase()}`);
       const pokemon = response.data;
 
+      const speciesResponse = await axios.get(pokemon.species.url);
+      const species = speciesResponse.data;
+
       embed.setTitle(pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1))
         .setThumbnail(pokemon.sprites.front_default)
         .addFields(
@@ -33,7 +36,9 @@ module.exports = {
           { name: 'Habilidades', value: pokemon.abilities.map(ability => ability.ability.name).join(', '), inline: true },
           { name: 'Experiencia base', value: pokemon.base_experience.toString(), inline: true },
           { name: 'Movimientos', value: pokemon.moves.slice(0, 5).map(move => move.move.name).join(', '), inline: false },
-          { name: 'Juego(s) de origen', value: pokemon.game_indices.map(game => game.version.name).join(', '), inline: false }
+          { name: 'Hábitat', value: species.habitat ? species.habitat.name : 'Desconocido', inline: true },
+          { name: 'Color', value: species.color.name, inline: true },
+          { name: 'Forma', value: species.shape.name, inline: true }
         )
         .setColor('Random');
 
