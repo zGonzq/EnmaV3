@@ -41,8 +41,8 @@ module.exports = {
             { name: 'Episodio', value: result.episode.toString(), inline: true },
             { name: 'Desde', value: formatTime(result.from), inline: true },
             { name: 'Hasta', value: formatTime(result.to), inline: true },
-            { name: 'Adulto', value: result.anilist.isAdult ? 'Sí' : 'No', inline: true },
-            { name: 'Título en inglés', value: result.anilist.title.english || 'No disponible', inline: true },
+            { name: 'Título en inglés', value: result.anilist.title.english || 'No disponible', inline: false },
+            { name: 'Adulto', value: result.anilist.isAdult ? 'Sí' : 'No', inline: false },
             { name: 'Sinonimos', value: result.anilist.synonyms.join(', ') || 'No disponible', inline: false },
 
         )
