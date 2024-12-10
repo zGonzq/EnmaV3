@@ -19,7 +19,7 @@ module.exports = {
     const embed = new EmbedBuilder();
     const imageAttachment = interaction.options.getAttachment('imagen');
 
-    await interaction.reply({ content: 'Estoy buscando el anime, un momento...'});
+    await interaction.reply({ content: 'Estoy buscando el anime, un momento...' });
 
     try {
       const response = await axios.get(`https://api.trace.moe/search?anilistInfo&url=${encodeURIComponent(imageAttachment.url)}`);
@@ -27,15 +27,24 @@ module.exports = {
 
       const similarityPercentage = Math.round(result.similarity * 100);
 
+      const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}m ${remainingSeconds}s`;
+      };
+
       embed.setTitle(result.anilist.title.romaji)
         .setDescription(result.anilist.title.native)
         .setImage(result.image)
         .setFooter({ text: `Similitud: ${similarityPercentage}%` })
         .addFields(
-          { name: 'Título en inglés', value: result.anilist.title.english || 'No disponible', inline: true },
-          { name: 'Episodio', value: result.episode.toString(), inline: true },
-          { name: 'Adulto', value: result.anilist.isAdult ? 'Sí' : 'No', inline: true },
-          { name: 'Sinónimos', value: result.anilist.synonyms.join(', ') || 'No disponible', inline: false }
+            { name: 'Episodio', value: result.episode.toString(), inline: true },
+            { name: 'Desde', value: formatTime(result.from), inline: true },
+            { name: 'Hasta', value: formatTime(result.to), inline: true },
+            { name: 'Adulto', value: result.anilist.isAdult ? 'Sí' : 'No', inline: true },
+            { name: 'Título en inglés', value: result.anilist.title.english || 'No disponible', inline: true },
+            { name: 'Sinonimos', value: result.anilist.synonyms.join(', ') || 'No disponible', inline: false },
+
         )
         .setColor('Random');
 
