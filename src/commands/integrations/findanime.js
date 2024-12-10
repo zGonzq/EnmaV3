@@ -15,7 +15,7 @@ module.exports = {
   /**
    * @param {import('commandkit').SlashCommandProps} param0
    */
-  run: async ({ interaction }) => {
+  run: async ({ interaction, client }) => {
     const embed = new EmbedBuilder();
     const imageAttachment = interaction.options.getAttachment('imagen');
 
@@ -35,6 +35,7 @@ module.exports = {
 
       embed.setTitle(result.anilist.title.romaji)
         .setDescription(result.anilist.title.native)
+        .setAuthor({ name: 'Resultado de búsqueda de anime', iconURL: `${client.user.displayAvatarURL()}` })
         .setImage(result.image)
         .setFooter({ text: `Similitud: ${similarityPercentage}%` })
         .addFields(
