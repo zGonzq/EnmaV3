@@ -29,6 +29,7 @@ module.exports = {
     embed.setTitle(pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1))
       .setThumbnail(pokemon.sprites.front_default)
       .setDescription(species.flavor_text_entries.find(entry => entry.language.name === 'es').flavor_text)
+      .setImage(`https://pokeres.bastionbot.org/images/pokemon/${pokemon.id}.png`)
       .addFields(
         { name: 'ID', value: pokemon.id.toString(), inline: true },
         { name: 'Altura', value: `${pokemon.height / 10} m`, inline: true },
