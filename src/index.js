@@ -7,12 +7,8 @@ const { join } = require('path');
 const mongoose = require('mongoose');
 
 const client = new Client({
-    intents: [
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent,
-    ],
+    intents: 
+        3276799
 });
 
 new CommandKit({
