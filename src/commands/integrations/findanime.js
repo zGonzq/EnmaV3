@@ -19,7 +19,7 @@ module.exports = {
     const embed = new EmbedBuilder();
     const imageAttachment = interaction.options.getAttachment('imagen');
 
-    await interaction.reply({ content: 'Estoy buscando el anime, un momento...' });
+    await interaction.reply({ embeds: [embed.setDescription('Buscando información del anime...')] });
 
     try {
       const response = await axios.get(`https://api.trace.moe/search?anilistInfo&url=${encodeURIComponent(imageAttachment.url)}`);
