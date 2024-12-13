@@ -2,22 +2,29 @@ const { EmbedBuilder } = require('discord.js');
 const Logs = require('../../models/logs');
 
 /**
- * @param {import('discord.js').Client} client
  * @param {import('discord.js').Collection<string, import('discord.js').Message>} messages
  */
-module.exports = async (client, messages) => {
+module.exports = async (messages) => {
   const guild = messages.first().guild;
-  const logSettings = await Logs.findOne({ guildId: guild.id });
 
-  if (!logSettings || !logSettings.enabled) return;
+  const config = await Logs.findOne({ guildId: guild.id });
+  if (!config || !config.enabled) return;
 
-  const logChannel = guild.channels.cache.get(logSettings.logChannelId);
+  const channel = messages.first().channel;
+
+  const log = await Logs.findOne({ guildId: guild.id });
+  if (!log) return;
+
+  const logChannel = guild.channels.cache.get(log.logChannelId);
   if (!logChannel) return;
 
   const embed = new EmbedBuilder()
-    .setTitle('Mensajes Eliminados en Masa')
-    .setDescription(`${messages.size} mensajes fueron eliminados en el canal ${messages.first().channel}`)
-    .setColor('Red')
+    .setTitle('Mensajes eliminados en masa')
+    .addFields(
+      { name: 'Canal', value: `${channel}` },
+      { name: 'Cantidad de mensajes', value: `${messages.size}` }
+    )
+    .setColor('DarkButNotBlack')
     .setTimestamp();
 
   logChannel.send({ embeds: [embed] });
