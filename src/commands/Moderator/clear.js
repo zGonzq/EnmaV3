@@ -28,6 +28,6 @@ module.exports = {
             embed.setDescription('Hubo un error al intentar eliminar los mensajes.').setColor('Red');
         }
 
-        await interaction.reply({ embeds: [embed], ephemeral: true });
+        await interaction.reply({ embeds: [embed]});
     },
 };
