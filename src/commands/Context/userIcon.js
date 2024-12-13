@@ -24,7 +24,7 @@ module.exports = {
 
             )
             .setThumbnail(user.displayAvatarURL({ dynamic: true, size: 4096 }))
-            .setImage(user.bannerURL({ size: 512, dynamic: true }))
+            .setImage(user.bannerURL({ dynamic: true }))
             .setTimestamp();
         interaction.reply({ embeds: [embed] });
         
