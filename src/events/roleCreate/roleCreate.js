@@ -15,7 +15,10 @@ module.exports = async (role) => {
 
   const embed = new EmbedBuilder()
     .setTitle('Rol Creado')
-    .setDescription(`El rol ${role.name} ha sido creado.`)
+    .setDescription(`El rol ${role.name} (${role}) ha sido creado.`)
+    .addFields(
+      { name: 'ID del rol', value: `${role.id}` },
+  )
     .setColor('Green')
     .setTimestamp();
 

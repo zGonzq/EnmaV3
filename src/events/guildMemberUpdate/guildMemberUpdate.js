@@ -16,7 +16,12 @@ module.exports = async (oldMember, newMember) => {
 
   const embed = new EmbedBuilder()
     .setTitle('Usuario Actualizado')
-    .setDescription(`El usuario ${oldMember.user.tag} ha sido actualizado.`)
+    .addFields(
+      { name: 'Antes', value: oldMember.displayName, inline: true },
+      { name: 'Después', value: newMember.displayName, inline: true },
+      { name: 'Roles', value: newMember.roles.cache.filter(role => role.name !== '@everyone').map(role => role.toString()).join(', ') || 'Ninguno', inline: false },
+      { name: 'Usuario', value: `${newMember.user}`, inline: false },
+    )
     .setColor('Yellow')
     .setTimestamp();
 

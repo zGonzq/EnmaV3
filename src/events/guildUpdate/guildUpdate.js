@@ -14,8 +14,17 @@ module.exports = async (oldGuild, newGuild) => {
   if (!logChannel) return;
 
   const embed = new EmbedBuilder()
-    .setTitle('Servidor Actualizado')
-    .setDescription(`El servidor ${oldGuild.name} ha sido actualizado.`)
+    .setTitle('Guild Actualizada')
+    .setThumbnail(newGuild.iconURL())
+    .setImage(newGuild.bannerURL({ size: 1024 }))
+    .addFields(
+      { name: 'Nombre', value: `${newGuild.name}` },
+      { name: 'Región', value: `${newGuild.region}` },
+      { name: 'Nivel de verificación', value: `${newGuild.verificationLevel}` },
+      { name: 'Filtro de contenido explícito', value: `${newGuild.explicitContentFilter}` },
+      { name: 'Dueño', value: `<@${newGuild.ownerId}>` },
+      { name: 'Banner', value: newGuild.bannerURL({ dynamic: true }) ? "** **" : "No tiene banner" }
+    )
     .setColor('Yellow')
     .setTimestamp();
 
