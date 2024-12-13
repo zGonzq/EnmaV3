@@ -2,7 +2,7 @@ const { EmbedBuilder, ContextMenuCommandBuilder, ApplicationCommandType } = requ
 module.exports = {
     /** @type {import('commandkit').CommandData}  */
     data: new ContextMenuCommandBuilder()
-        .setName('User icon')
+        .setName('User info')
         .setType(ApplicationCommandType.User),
     /**
     * @param {import('commandkit').ContextMenuCommandProps} param0
