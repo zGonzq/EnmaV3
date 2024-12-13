@@ -18,6 +18,8 @@ module.exports = async (oldMessage, newMessage) => {
   const logChannel = guild.channels.cache.get(logSettings.logChannelId);
   if (!logChannel) return;
 
+  if (newMessage.author.bot) return;
+
   const embed = new EmbedBuilder()
     .setTitle('Mensaje Actualizado')
     .setDescription(`Un mensaje de ${oldMessage.author.tag} ha sido actualizado en el canal ${oldMessage.channel}.`)
