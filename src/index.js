@@ -17,6 +17,7 @@ new CommandKit({
     commandsPath: join(__dirname, 'commands'),
     devUserIds: ['944060279082340433'],
     devGuildIds: ['872260926055776267'],
+    bulkRegister: true,
 });
 
 mongoose.set('strictQuery', false);
