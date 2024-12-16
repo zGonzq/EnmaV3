@@ -34,7 +34,10 @@ module.exports = {
       return interaction.reply({ embeds: [embed.setDescription('No tengo permisos para asignar este rol.').setColor('Red')] });
     }
 
-    const members = interaction.guild.members.cache.filter(member => {
+    await interaction.deferReply();
+
+    const members = await interaction.guild.members.fetch();
+    const filteredMembers = members.filter(member => {
       if (subcommand === 'userrole') {
         return !member.user.bot;
       } else if (subcommand === 'botrole') {
@@ -42,24 +45,22 @@ module.exports = {
       }
     });
 
-    let totalMembers = members.size;
-    let membersWithoutRole = members.filter(member => !member.roles.cache.has(role.id));
+    let totalMembers = filteredMembers.size;
+    let processedMembers = 0;
+    let membersWithoutRole = filteredMembers.filter(member => !member.roles.cache.has(role.id));
     let totalMembersWithoutRole = membersWithoutRole.size;
 
     if (totalMembersWithoutRole === 0) {
-      return interaction.reply({ embeds: [embed.setDescription(`Todos los ${subcommand === 'userrole' ? 'usuarios' : 'bots'} ya tienen el rol <@&${role.id}>.`).setColor('Blurple')] });
+      return interaction.editReply({ embeds: [embed.setDescription(`Todos los ${subcommand === 'userrole' ? 'usuarios' : 'bots'} ya tienen el rol <@&${role.id}>.`).setColor('Blurple')] });
     }
 
-    let processedMembers = 0;
-
-    const statusMessage = await interaction.reply({ embeds: [embed.setDescription(`Asignando rol... (0/${totalMembersWithoutRole})`).setColor('Yellow')], fetchReply: true });
+    const statusMessage = await interaction.editReply({ embeds: [embed.setDescription(`Asignando rol... (0/${totalMembersWithoutRole})`).setColor('Yellow')], fetchReply: true });
 
     for (const member of membersWithoutRole.values()) {
       try {
         await member.roles.add(role);
       } catch (error) {
         console.log(`Error al asignar el rol a ${member.user.tag}: ${error}`);
-        interaction.channel.send(`Error al asignar el rol a ${member.user.tag}`);
       }
       processedMembers++;
       await statusMessage.edit({ embeds: [embed.setDescription(`Asignando rol... (${processedMembers}/${totalMembersWithoutRole})`).setColor('Yellow')] });
