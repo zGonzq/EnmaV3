@@ -20,9 +20,20 @@ module.exports = async (oldMessage, newMessage) => {
 
   if (newMessage.author.bot) return;
 
+  let description;
+  if (oldMessage.embeds.length > 0 || newMessage.embeds.length > 0) {
+    description = `Un mensaje de ${oldMessage.author.tag} ha sido actualizado en el canal ${oldMessage.channel}.\n\n**Contenido del mensaje:**\nEl contenido era un embed.`;
+  } else {
+    description = `Un mensaje de ${oldMessage.author.tag} ha sido actualizado en el canal ${oldMessage.channel}.`;
+  }
+
   const embed = new EmbedBuilder()
     .setTitle('Mensaje Actualizado')
-    .setDescription(`Un mensaje de ${oldMessage.author.tag} ha sido actualizado en el canal ${oldMessage.channel}.`)
+    .setDescription(description)
+    .addFields(
+      { name: 'Mensaje Anterior', value: oldMessage.content || 'N/A' },
+      { name: 'Mensaje Actual', value: newMessage.content || 'N/A' }
+    )
     .setColor('Yellow')
     .setTimestamp();
 

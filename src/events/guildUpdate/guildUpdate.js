@@ -19,7 +19,6 @@ module.exports = async (oldGuild, newGuild) => {
     .setImage(newGuild.bannerURL({ size: 1024 }))
     .addFields(
       { name: 'Nombre', value: `${newGuild.name}` },
-      { name: 'Región', value: `${newGuild.region}` },
       { name: 'Nivel de verificación', value: `${newGuild.verificationLevel}` },
       { name: 'Filtro de contenido explícito', value: `${newGuild.explicitContentFilter}` },
       { name: 'Dueño', value: `<@${newGuild.ownerId}>` },
