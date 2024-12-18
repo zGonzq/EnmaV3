@@ -37,7 +37,7 @@ module.exports = {
             return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
-        const emojiUrl = `https://cdn.discordapp.com/emojis/${emojiId}.png`;
+        const emojiUrl = `https://cdn.discordapp.com/emojis/${emojiId}.webp`;
 
         const embed = new EmbedBuilder()
             .setTitle('Emoji')
