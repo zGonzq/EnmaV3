@@ -1,0 +1,1 @@
+worker: commandkit build && commandkit start

@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "commandkit dev",
     "build": "commandkit build",
-    "start": "commandkit build && commandkit start"
+    "start": "commandkit start"
   },
   "keywords": [],
   "author": "",
