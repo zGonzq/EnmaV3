@@ -22,8 +22,8 @@ jobs:
           cd ${{ secrets.WORK_DIR }} &&
           git checkout ${{ secrets.MAIN_BRANCH }} &&
           git pull &&
-          npm install &&
-          npm run build
+          bun install &&
+          bun run build
         "
         
     - name: cleanup
