@@ -3,7 +3,7 @@ const Todo = require('../../models/todo');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('to-do')
+    .setName('todo')
     .setDescription('Gestiona tu lista de tareas')
     .addSubcommand(subcommand =>
       subcommand
@@ -45,34 +45,55 @@ module.exports = {
 
     if (subcommand === 'add') {
       const title = interaction.options.getString('title');
-      const description = interaction.options.getString('description') || '';
+      const description = interaction.options.getString('description') || 'Sin descripción';
 
       userTodo.tasks.push({ title, description });
       await userTodo.save();
 
-      return interaction.reply({ content: `Tarea añadida: ${title}`, ephemeral: true });
+      const embed = new EmbedBuilder()
+        .setTitle('Tarea Añadida')
+        .setDescription(`**Título:** ${title}\n**Descripción:** ${description}`)
+        .setColor('Green');
+
+      return interaction.reply({ embeds: [embed], ephemeral: true });
 
     } else if (subcommand === 'remove') {
       const index = interaction.options.getInteger('index') - 1;
 
       if (index < 0 || index >= userTodo.tasks.length) {
-        return interaction.reply({ content: 'Índice de tarea inválido.', ephemeral: true });
+        const embed = new EmbedBuilder()
+          .setTitle('Error')
+          .setDescription('Índice de tarea inválido.')
+          .setColor('Red');
+
+        return interaction.reply({ embeds: [embed], ephemeral: true });
       }
 
       const removedTask = userTodo.tasks.splice(index, 1);
       await userTodo.save();
 
-      return interaction.reply({ content: `Tarea eliminada: ${removedTask[0].title}`, ephemeral: true });
+      const embed = new EmbedBuilder()
+        .setTitle('Tarea Eliminada')
+        .setDescription(`**Título:** ${removedTask[0].title}\n**Descripción:** ${removedTask[0].description || 'Sin descripción'}`)
+        .setColor('Red');
+
+      return interaction.reply({ embeds: [embed], ephemeral: true });
 
     } else if (subcommand === 'list') {
       if (userTodo.tasks.length === 0) {
-        return interaction.reply({ content: 'No tienes tareas en tu lista.', ephemeral: true });
+        const embed = new EmbedBuilder()
+          .setTitle('Lista de Tareas')
+          .setDescription('No tienes tareas en tu lista.')
+          .setColor('Blue');
+
+        return interaction.reply({ embeds: [embed], ephemeral: true });
       }
 
       const taskList = userTodo.tasks.map((task, index) => {
         const statusEmoji = task.status === 'completed' ? '🟢' : task.status === 'in progress' ? '🟡' : '🔴';
-        return `${statusEmoji} ${index + 1}. ${task.title}`;
-      }).join('\n');
+        const statusText = task.status === 'completed' ? 'Completado' : task.status === 'in progress' ? 'En progreso' : 'Pendiente';
+        return `**Estado:** ${statusEmoji} ${statusText}\n**Título:** ${task.title}\n**Descripción:** ${task.description || 'Sin descripción'}`;
+      }).join('\n\n');
 
       const embed = new EmbedBuilder()
         .setTitle('Lista de Tareas')
@@ -86,13 +107,26 @@ module.exports = {
       const status = interaction.options.getString('status');
 
       if (index < 0 || index >= userTodo.tasks.length) {
-        return interaction.reply({ content: 'Índice de tarea inválido.', ephemeral: true });
+        const embed = new EmbedBuilder()
+          .setTitle('Error')
+          .setDescription('Índice de tarea inválido.')
+          .setColor('Red');
+
+        return interaction.reply({ embeds: [embed], ephemeral: true });
       }
 
       userTodo.tasks[index].status = status;
       await userTodo.save();
 
-      return interaction.reply({ content: `Estado de la tarea actualizado a ${status}.`, ephemeral: true });
+      const statusEmoji = status === 'completed' ? '🟢' : status === 'in progress' ? '🟡' : '🔴';
+      const statusText = status === 'completed' ? 'Completado' : status === 'in progress' ? 'En progreso' : 'Pendiente';
+
+      const embed = new EmbedBuilder()
+        .setTitle('Estado de la Tarea Actualizado')
+        .setDescription(`**Estado:** ${statusEmoji} ${statusText}\n**Título:** ${userTodo.tasks[index].title}\n**Descripción:** ${userTodo.tasks[index].description || 'Sin descripción'}`)
+        .setColor('Yellow');
+
+      return interaction.reply({ embeds: [embed], ephemeral: true });
     }
   }
 };
