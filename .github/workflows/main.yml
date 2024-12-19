@@ -16,14 +16,16 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-    - name: connect, pull, and build
+    - name: connect, pull, build, and start
       run: |
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
           cd ${{ secrets.WORK_DIR }} &&
           git checkout ${{ secrets.MAIN_BRANCH }} &&
           git pull &&
           npm install &&
-          npm run build
+          npm run build &&
+          screen -S 2151 -X quit || true &&
+          screen -dmS 2151 bash -c 'npm start'
         "
         
     - name: cleanup
