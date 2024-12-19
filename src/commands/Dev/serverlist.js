@@ -17,7 +17,8 @@ module.exports = {
 
     let count = 0;
 
-    client.guilds.cache.forEach(guild => {
+    for (const guild of client.guilds.cache.values()) {
+      const owner = await guild.fetchOwner();
       if (count === 25) {
         embeds.push(embed);
         embed = new EmbedBuilder()
@@ -25,9 +26,13 @@ module.exports = {
           .setColor('Random');
         count = 0;
       }
-      embed.addFields({ name: guild.name, value: `Miembros: ${guild.memberCount}\n Owner: ${guild.owner.user}` });
+      embed.addFields({ 
+        name: guild.name, 
+        value: `Miembros: ${guild.memberCount}\nPropietario: ${owner.user.tag}`, 
+        inline: false 
+      });
       count++;
-    });
+    }
 
     if (count > 0) {
       embeds.push(embed);
