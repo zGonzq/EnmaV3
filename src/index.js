@@ -20,6 +20,8 @@ new CommandKit({
     bulkRegister: true,
 });
 
+require("./handler/anticrash")(client);
+
 mongoose.set('strictQuery', false);
 await mongoose.connect(process.env.MONGO_URI);
 
