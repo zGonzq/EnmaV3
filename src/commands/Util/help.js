@@ -73,7 +73,8 @@ module.exports = {
                 const selectedCategory = i.values[0];
                 const categoryPath = path.join(__dirname, commandsPath, selectedCategory);
 
-                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.endsWith('.js'));
+                // Convertir el nombre de la carpeta a minúsculas para evitar problemas de sensibilidad a mayúsculas y minúsculas
+                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.toLowerCase().endsWith('.js'));
 
                 const commands = commandFiles.map(file => {
                     const command = require(path.join(categoryPath, file));
