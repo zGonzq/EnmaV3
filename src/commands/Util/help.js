@@ -94,7 +94,7 @@ module.exports = {
                     .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
                     .setColor('Red');
 
-                await interaction.editReply({ embeds: [closeEmbed] components: [] });
+                await interaction.editReply({ embeds: [closeEmbed], components: [] });
             });
 
         } catch (error) {
