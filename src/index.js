@@ -27,11 +27,18 @@ await mongoose.connect(process.env.MONGO_URI);
 
 // funcion que buscara en todos los servidores en los que este el bot y sumara a todos los usuarios para conseguir el total de usuarios
 
-let totalUsers = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+
 
 try
 {
     client.login(process.env.TOKEN).then(() => {
+
+        let totalUsers = 0;
+
+            client.guilds.cache.forEach(guild => {
+            totalUsers += guild.memberCount;
+        });
+
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
             { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
