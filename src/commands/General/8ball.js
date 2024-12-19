@@ -3,7 +3,8 @@ module.exports = {
   /** @type {import('commandkit').CommandData}  */
   data: new SlashCommandBuilder()
     .setName('8ball')
-    .setDescription('Hazle una pregunta a la bola mágica'),
+    .setDescription('Hazle una pregunta a la bola mágica')
+    .addStringOption(option =>  option.setName('question').setDescription('Hazle una pregunta a la bola mágica').setRequired(true)),
   /**
    * @param {import('commandkit').SlashCommandProps} param0
    */
