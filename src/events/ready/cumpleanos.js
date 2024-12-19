@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const Birthday = require('../../models/birthday');
+const Birthday = require('../../models/cumpleanos');
 
 /** * @param {import('discord.js').Client} client */
 module.exports = async (client) => {
