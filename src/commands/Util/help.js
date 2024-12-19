@@ -22,6 +22,8 @@ function getCommands(client, name) {
     return getCommandID[0];
 }
 
+const commandsPath = process.env.NODE_ENV === 'production' ? '../dist/commands' : '../src/commands';
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
@@ -29,8 +31,8 @@ module.exports = {
 
     run: async ({ interaction, client }) => {
         try {
-            const commandFolders = fs.readdirSync(path.join(__dirname, '../src/commands'))
-                .filter(folder => fs.statSync(path.join(__dirname, '../src/commands', folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
+            const commandFolders = fs.readdirSync(path.join(__dirname, commandsPath))
+                .filter(folder => fs.statSync(path.join(__dirname, commandsPath, folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
 
             const options = commandFolders.map(folder => ({
                 label: folder.charAt(0).toUpperCase() + folder.slice(1),
@@ -69,7 +71,7 @@ module.exports = {
                 }
 
                 const selectedCategory = i.values[0];
-                const categoryPath = path.join(__dirname, '../src/commands', selectedCategory);
+                const categoryPath = path.join(__dirname, commandsPath, selectedCategory);
 
                 if (!fs.existsSync(categoryPath)) {
                     const errorEmbed = new EmbedBuilder()
