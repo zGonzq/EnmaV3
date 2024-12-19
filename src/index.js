@@ -33,20 +33,13 @@ try
 {
     client.login(process.env.TOKEN).then(() => {
 
-        let totalUsers = 0;
-
-            client.guilds.cache.forEach(guild => {
-            totalUsers += guild.memberCount;
-        });
+        const userCount = client.guilds.cache.reduce((a, g) => a+g.memberCount, 0)
 
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
-            { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
+            { name: `En ${client.guilds.cache.size} servidores con ${userCount} usuarios. 🚀`, type: ActivityType.Watching },
             { name: `Obten ayuda /help.`, type: ActivityType.Playing },
             { name: `Última actualización: To-do`, type: ActivityType.Listening },
-            { name: `${totalUsers} usuarios.`, type: ActivityType.Watching },
-
-
         ];
     
         let i = 0;
