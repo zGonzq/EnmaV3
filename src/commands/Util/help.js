@@ -30,12 +30,13 @@ module.exports = {
     run: async ({ interaction, client }) => {
         try {
             const commandFolders = fs.readdirSync(path.join(__dirname, '../src/commands'))
-                .filter(folder => fs.statSync(path.join(__dirname, '../src/commands', folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
+                .filter(folder => fs.statSync(path.join(__dirname, '../src/commands', folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()))
+                .map(folder => folder.toLowerCase());
 
             const options = commandFolders.map(folder => ({
                 label: folder.charAt(0).toUpperCase() + folder.slice(1),
-                value: folder.toLowerCase(),
-                emoji: emojis[folder.toLowerCase()] || '❓'
+                value: folder,
+                emoji: emojis[folder] || '❓'
             }));
 
             const selectMenu = new StringSelectMenuBuilder()
@@ -69,20 +70,10 @@ module.exports = {
                 }
 
                 const selectedCategory = i.values[0];
-                const categoryPath = path.join(__dirname, '../src/commands', selectedCategory);
-
-                if (!fs.existsSync(categoryPath)) {
-                    const errorEmbed = new EmbedBuilder()
-                        .setDescription(`La categoría seleccionada no existe.`)
-                        .setColor('Red');
-                    await i.reply({ embeds: [errorEmbed], ephemeral: true });
-                    return;
-                }
-
-                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.endsWith('.js'));
+                const commandFiles = fs.readdirSync(path.join(__dirname, '../src/commands', selectedCategory)).filter(file => file.endsWith('.js'));
 
                 const commands = commandFiles.map(file => {
-                    const command = require(path.join(categoryPath, file));
+                    const command = require(path.join(__dirname, '../src/commands', selectedCategory, file));
                     const commandId = getCommands(client, command.data.name);
                     return `</${command.data.name}:${commandId}> \n${command.data.description}`;
                 });
