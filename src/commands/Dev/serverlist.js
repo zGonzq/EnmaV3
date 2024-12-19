@@ -28,7 +28,7 @@ module.exports = {
       }
       embed.addFields({ 
         name: guild.name, 
-        value: `Miembros: ${guild.memberCount}\nPropietario: ${owner.user.tag}`, 
+        value: `Miembros: ${guild.memberCount}\nPropietario: ${owner.user}`, 
         inline: false 
       });
       count++;
