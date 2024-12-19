@@ -69,10 +69,20 @@ module.exports = {
                 }
 
                 const selectedCategory = i.values[0];
-                const commandFiles = fs.readdirSync(path.join(__dirname, '../src/commands', selectedCategory)).filter(file => file.endsWith('.js'));
+                const categoryPath = path.join(__dirname, '../src/commands', selectedCategory);
+
+                if (!fs.existsSync(categoryPath)) {
+                    const errorEmbed = new EmbedBuilder()
+                        .setDescription(`La categoría seleccionada no existe.`)
+                        .setColor('Red');
+                    await i.reply({ embeds: [errorEmbed], ephemeral: true });
+                    return;
+                }
+
+                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.endsWith('.js'));
 
                 const commands = commandFiles.map(file => {
-                    const command = require(path.join(__dirname, '../src/commands', selectedCategory, file));
+                    const command = require(path.join(categoryPath, file));
                     const commandId = getCommands(client, command.data.name);
                     return `</${command.data.name}:${commandId}> \n${command.data.description}`;
                 });
