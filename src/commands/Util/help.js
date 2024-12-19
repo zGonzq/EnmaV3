@@ -88,7 +88,13 @@ module.exports = {
             });
 
             collector.on('end', async () => {
-                await interaction.editReply({ components: [] });
+                const closeEmbed = new EmbedBuilder()
+                    .setDescription('El menú de ayuda ha sido cerrado.')
+                    .setFooter({ text: 'Este menú se cerró automáticamente.'})
+                    .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
+                    .setColor('Red');
+
+                await interaction.editReply({ embeds: [closeEmbed] components: [] });
             });
 
         } catch (error) {
