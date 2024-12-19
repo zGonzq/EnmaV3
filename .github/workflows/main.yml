@@ -24,7 +24,7 @@ jobs:
           git pull &&
           npm install &&
           screen -S enma -X quit || true &&
-          screen -dmS enma bash -c 'npm run dev'
+          screen -dmS enma bash -c 'npm run build'
         "
         
     - name: cleanup
