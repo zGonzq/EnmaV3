@@ -27,6 +27,7 @@ client.login(process.env.TOKEN).then(() => {
     const activities = [
         { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
         { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
+        { name: `Obten ayuda /help.`, type: ActivityType.Playing },
     ];
 
     let i = 0;

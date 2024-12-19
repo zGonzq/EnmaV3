@@ -8,4 +8,4 @@ const welcomeSettingsSchema = new mongoose.Schema({
   botRole: { type: String, default: null },
 });
 
-module.exports = mongoose.model('WelcomeSettings', welcomeSettingsSchema);
+module.exports = mongoose.models.WelcomeSettings || mongoose.model('WelcomeSettings', welcomeSettingsSchema);

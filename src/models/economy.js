@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, models } = require('mongoose');
 
 const economySchema = new Schema({
     userId: { type: String, required: true },
@@ -18,4 +18,4 @@ const economySchema = new Schema({
     lastRoulette: { type: Date, default: new Date(0) },
 });
 
-module.exports = model('economy', economySchema);
+module.exports = models.Economy || model('Economy', economySchema);

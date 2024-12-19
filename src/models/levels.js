@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, models } = require('mongoose');
 
 const levelSchema = new Schema({
     guildId: { type: String, required: true },
@@ -7,4 +7,4 @@ const levelSchema = new Schema({
     level: { type: Number, default: 0 },
 });
 
-module.exports = model('Level', levelSchema);
+module.exports = models.Level || model('Level', levelSchema);

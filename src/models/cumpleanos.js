@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema, models } = require('mongoose');
 
 const birthdaySchema = new Schema({
     userID: String,
@@ -6,4 +6,4 @@ const birthdaySchema = new Schema({
     month: Number
 });
 
-module.exports = model('Birthday', birthdaySchema);
+module.exports = models.Birthday || model('Birthday', birthdaySchema);
