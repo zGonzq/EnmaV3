@@ -23,6 +23,7 @@ function getCommands(client, name) {
 }
 
 const commandsPath = process.env.NODE_ENV === 'production' ? '../dist/commands' : '../src/commands';
+const fileExtension = process.env.NODE_ENV === 'production' ? '.mjs' : '.js';
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -79,13 +80,14 @@ module.exports = {
                 const originalCategory = folderMap[selectedCategory];
                 const categoryPath = path.join(__dirname, commandsPath, originalCategory);
 
-                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.toLowerCase().endsWith('.mjs'));
+                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.toLowerCase().endsWith(fileExtension));
 
-                const commands = commandFiles.map(file => {
-                    const command = require(path.join(categoryPath, file));
+                const commands = await Promise.all(commandFiles.map(async file => {
+                    const commandPath = path.join(categoryPath, file);
+                    const command = fileExtension === '.mjs' ? await import(commandPath) : require(commandPath);
                     const commandId = getCommands(client, command.data.name);
                     return `</${command.data.name}:${commandId}> \n${command.data.description}`;
-                });
+                }));
 
                 const categoryEmbed = new EmbedBuilder()
                     .setTitle(`Comandos de ${originalCategory.charAt(0).toUpperCase() + originalCategory.slice(1)} [${commands.length}]`)
