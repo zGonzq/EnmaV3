@@ -74,13 +74,7 @@ module.exports = {
                 const commands = commandFiles.map(file => {
                     const command = require(path.join(__dirname, '../src/commands', selectedCategory, file));
                     const commandId = getCommands(client, command.data.name);
-                    let description = command.data.description;
-
-                    if (command.data.options && command.data.options.length > 2) {
-                        description += ` +${command.data.options.length - 2}`;
-                    }
-
-                    return `</${command.data.name}:${commandId}> \n${description}`;
+                    return `</${command.data.name}:${commandId}> \n${command.data.description}`;
                 });
 
                 const categoryEmbed = new EmbedBuilder()
