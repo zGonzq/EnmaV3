@@ -73,14 +73,6 @@ module.exports = {
                 const selectedCategory = i.values[0];
                 const categoryPath = path.join(__dirname, commandsPath, selectedCategory);
 
-                if (!fs.existsSync(categoryPath)) {
-                    const errorEmbed = new EmbedBuilder()
-                        .setDescription(`La categoría seleccionada no existe.`)
-                        .setColor('Red');
-                    await i.reply({ embeds: [errorEmbed], ephemeral: true });
-                    return;
-                }
-
                 const commandFiles = fs.readdirSync(categoryPath).filter(file => file.endsWith('.js'));
 
                 const commands = commandFiles.map(file => {
