@@ -22,9 +22,6 @@ function getCommands(client, name) {
     return getCommandID[0];
 }
 
-const commandsPath = process.env.NODE_ENV === 'production' ? '../dist/commands' : '../src/commands';
-const fileExtension = process.env.NODE_ENV === 'production' ? '.mjs' : '.js';
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
@@ -32,13 +29,8 @@ module.exports = {
 
     run: async ({ interaction, client }) => {
         try {
-            const commandFolders = fs.readdirSync(path.join(__dirname, commandsPath))
-                .filter(folder => fs.statSync(path.join(__dirname, commandsPath, folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
-
-            const folderMap = commandFolders.reduce((acc, folder) => {
-                acc[folder.toLowerCase()] = folder;
-                return acc;
-            }, {});
+            const commandFolders = fs.readdirSync(path.join(__dirname, '../src/commands'))
+                .filter(folder => fs.statSync(path.join(__dirname, '../src/commands', folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
 
             const options = commandFolders.map(folder => ({
                 label: folder.charAt(0).toUpperCase() + folder.slice(1),
@@ -77,33 +69,27 @@ module.exports = {
                 }
 
                 const selectedCategory = i.values[0];
-                const originalCategory = folderMap[selectedCategory];
-                const categoryPath = path.join(__dirname, commandsPath, originalCategory);
+                const categoryPath = path.join(__dirname, '../src/commands', selectedCategory);
 
-                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.toLowerCase().endsWith(fileExtension));
+                if (!fs.existsSync(categoryPath)) {
+                    const errorEmbed = new EmbedBuilder()
+                        .setDescription(`La categoría seleccionada no existe.`)
+                        .setColor('Red');
+                    await i.reply({ embeds: [errorEmbed], ephemeral: true });
+                    return;
+                }
 
-                const commands = await Promise.all(commandFiles.map(async file => {
-                    const commandPath = path.join(categoryPath, file);
-                    let command;
-                    try {
-                        command = fileExtension === '.mjs' ? await import(commandPath) : require(commandPath);
-                    } catch (error) {
-                        console.error(`Error importing command: ${commandPath}`, error);
-                        return null;
-                    }
-                    if (!command || !command.data) {
-                        console.error(`Invalid command structure: ${commandPath}`);
-                        return null;
-                    }
+                const commandFiles = fs.readdirSync(categoryPath).filter(file => file.endsWith('.js'));
+
+                const commands = commandFiles.map(file => {
+                    const command = require(path.join(categoryPath, file));
                     const commandId = getCommands(client, command.data.name);
                     return `</${command.data.name}:${commandId}> \n${command.data.description}`;
-                }));
-
-                const validCommands = commands.filter(cmd => cmd !== null);
+                });
 
                 const categoryEmbed = new EmbedBuilder()
-                    .setTitle(`Comandos de ${originalCategory.charAt(0).toUpperCase() + originalCategory.slice(1)} [${validCommands.length}]`)
-                    .setDescription(validCommands.join('\n\n'))
+                    .setTitle(`Comandos de ${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} [${commands.length}]`)
+                    .setDescription(commands.join('\n\n'))
                     .setFooter({ text: 'El menú se cerrará automáticamente en 60 segundos.'})
                     .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
                     .setColor('Blurple');

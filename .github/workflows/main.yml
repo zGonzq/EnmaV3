@@ -23,9 +23,8 @@ jobs:
           git checkout ${{ secrets.MAIN_BRANCH }} &&
           git pull &&
           npm install &&
-          npm run build &&
-          screen -S 2151 -X quit || true &&
-          screen -dmS 2151 bash -c 'npm start'
+          screen -S enma -X quit || true &&
+          screen -dmS enma bash -c 'npm run dev'
         "
         
     - name: cleanup

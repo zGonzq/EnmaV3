@@ -23,18 +23,26 @@ new CommandKit({
 mongoose.set('strictQuery', false);
 await mongoose.connect(process.env.MONGO_URI);
 
-client.login(process.env.TOKEN).then(() => {
-    const activities = [
-        { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
-        { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
-        { name: `Obten ayuda /help.`, type: ActivityType.Playing },
-    ];
-
-    let i = 0;
-    setInterval(() => {
-        const activity = activities[i];
-        client.user.setActivity(activity.name, { type: activity.type });
-        i = ++i % activities.length;
-    }, 30000);
-
-});;
+try
+{
+    client.login(process.env.TOKEN).then(() => {
+        const activities = [
+            { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
+            { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
+            { name: `Obten ayuda /help.`, type: ActivityType.Playing },
+        ];
+    
+        let i = 0;
+        setInterval(() => {
+            const activity = activities[i];
+            client.user.setActivity(activity.name, { type: activity.type });
+            i = ++i % activities.length;
+        }, 30000);
+    
+    });;
+    
+}
+catch (error)
+{
+    console.error(error);
+}
