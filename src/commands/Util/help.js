@@ -30,13 +30,12 @@ module.exports = {
     run: async ({ interaction, client }) => {
         try {
             const commandFolders = fs.readdirSync(path.join(__dirname, '../src/commands'))
-                .filter(folder => fs.statSync(path.join(__dirname, '../src/commands', folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()))
-                .map(folder => folder.toLowerCase());
+                .filter(folder => fs.statSync(path.join(__dirname, '../src/commands', folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
 
             const options = commandFolders.map(folder => ({
                 label: folder.charAt(0).toUpperCase() + folder.slice(1),
                 value: folder,
-                emoji: emojis[folder] || '❓'
+                emoji: emojis[folder.toLowerCase()] || '❓'
             }));
 
             const selectMenu = new StringSelectMenuBuilder()
@@ -89,13 +88,7 @@ module.exports = {
             });
 
             collector.on('end', async () => {
-                const closedEmbed = new EmbedBuilder()
-                    .setTitle('Menú cerrado')
-                    .setDescription('El menú de ayuda se ha cerrado.')
-                    .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
-                    .setColor('Blurple');
-                
-                await reply.edit({ embeds: [closedEmbed], components: [] });
+                await interaction.editReply({ components: [] });
             });
 
         } catch (error) {
