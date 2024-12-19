@@ -25,7 +25,7 @@ module.exports = {
           .setColor('Random');
         count = 0;
       }
-      embed.addFields({ name: guild.name, value: `Miembros: ${guild.memberCount}`, inline: false });
+      embed.addFields({ name: guild.name, value: `Miembros: ${guild.memberCount}\n Owner: ${guild.owner.user}` });
       count++;
     });
 
