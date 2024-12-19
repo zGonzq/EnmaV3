@@ -34,6 +34,11 @@ module.exports = {
             const commandFolders = fs.readdirSync(path.join(__dirname, commandsPath))
                 .filter(folder => fs.statSync(path.join(__dirname, commandsPath, folder)).isDirectory() && !ignoredFolders.includes(folder.toLowerCase()));
 
+            const folderMap = commandFolders.reduce((acc, folder) => {
+                acc[folder.toLowerCase()] = folder;
+                return acc;
+            }, {});
+
             const options = commandFolders.map(folder => ({
                 label: folder.charAt(0).toUpperCase() + folder.slice(1),
                 value: folder.toLowerCase(),
@@ -71,9 +76,9 @@ module.exports = {
                 }
 
                 const selectedCategory = i.values[0];
-                const categoryPath = path.join(__dirname, commandsPath, selectedCategory);
+                const originalCategory = folderMap[selectedCategory];
+                const categoryPath = path.join(__dirname, commandsPath, originalCategory);
 
-                // Convertir el nombre de la carpeta a minúsculas para evitar problemas de sensibilidad a mayúsculas y minúsculas
                 const commandFiles = fs.readdirSync(categoryPath).filter(file => file.toLowerCase().endsWith('.js'));
 
                 const commands = commandFiles.map(file => {
@@ -83,7 +88,7 @@ module.exports = {
                 });
 
                 const categoryEmbed = new EmbedBuilder()
-                    .setTitle(`Comandos de ${selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)} [${commands.length}]`)
+                    .setTitle(`Comandos de ${originalCategory.charAt(0).toUpperCase() + originalCategory.slice(1)} [${commands.length}]`)
                     .setDescription(commands.join('\n\n'))
                     .setFooter({ text: 'El menú se cerrará automáticamente en 60 segundos.'})
                     .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
