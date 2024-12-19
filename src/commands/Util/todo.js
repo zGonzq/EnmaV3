@@ -92,7 +92,7 @@ module.exports = {
       const taskList = userTodo.tasks.map((task, index) => {
         const statusEmoji = task.status === 'completed' ? '🟢' : task.status === 'in progress' ? '🟡' : '🔴';
         const statusText = task.status === 'completed' ? 'Completado' : task.status === 'in progress' ? 'En progreso' : 'Pendiente';
-        return `**Estado:** ${statusText} ${statusEmoji}\n**Título:** ${task.title}\n**Descripción:** ${task.description || 'Sin descripción'}`;
+        return `**Título:** ${task.title}\n**Descripción:** ${task.description || 'Sin descripción'}\n**Estado:** ${statusText} ${statusEmoji}`;
       }).join('\n\n');
 
       const embed = new EmbedBuilder()
