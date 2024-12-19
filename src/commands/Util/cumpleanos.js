@@ -43,7 +43,7 @@ module.exports = {
             return interaction.reply({ embeds: [embed] });
         }
 
-        if (subcommand === 'disable') {
+        if (subcommand === 'borrar') {
             if (!existingBirthday) {
                 const embed = new EmbedBuilder()
                     .setColor('Orange')
