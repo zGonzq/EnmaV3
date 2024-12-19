@@ -84,14 +84,26 @@ module.exports = {
 
                 const commands = await Promise.all(commandFiles.map(async file => {
                     const commandPath = path.join(categoryPath, file);
-                    const command = fileExtension === '.mjs' ? await import(commandPath) : require(commandPath);
+                    let command;
+                    try {
+                        command = fileExtension === '.mjs' ? await import(commandPath) : require(commandPath);
+                    } catch (error) {
+                        console.error(`Error importing command: ${commandPath}`, error);
+                        return null;
+                    }
+                    if (!command || !command.data) {
+                        console.error(`Invalid command structure: ${commandPath}`);
+                        return null;
+                    }
                     const commandId = getCommands(client, command.data.name);
                     return `</${command.data.name}:${commandId}> \n${command.data.description}`;
                 }));
 
+                const validCommands = commands.filter(cmd => cmd !== null);
+
                 const categoryEmbed = new EmbedBuilder()
-                    .setTitle(`Comandos de ${originalCategory.charAt(0).toUpperCase() + originalCategory.slice(1)} [${commands.length}]`)
-                    .setDescription(commands.join('\n\n'))
+                    .setTitle(`Comandos de ${originalCategory.charAt(0).toUpperCase() + originalCategory.slice(1)} [${validCommands.length}]`)
+                    .setDescription(validCommands.join('\n\n'))
                     .setFooter({ text: 'El menú se cerrará automáticamente en 60 segundos.'})
                     .setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL()})
                     .setColor('Blurple');
