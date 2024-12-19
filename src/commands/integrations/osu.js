@@ -44,7 +44,7 @@ module.exports = {
                     { name: 'Jugadas', value: `${user.counts.plays}`, inline: true },
                     { name: 'SS+ / SS / S+ / S / A', value: `${user.counts.SSH} / ${user.counts.SS} / ${user.counts.SH} / ${user.counts.S} / ${user.counts.A}`, inline: false },
                 )
-                .setImage(`https://lemmmy.pw/osusig/sig.php?colour=hexff66aa&uname=${user.name}&pp=2&countryrank&flagshadow&darktriangles&onlineindicator=undefined&xpbar&xpbarhex`)
+                .setImage(`https://lemmmy.pw/osusig/sig.php?colour=hexff66aa&uname=${user.name}&pp=2&countryrank&flagshadow&darktriangles&onlineindicator=undefined&xpbar&xpbarhex`, { size: 2048 })
                 .setColor('#FF66AA')
                 .setTimestamp();
 
