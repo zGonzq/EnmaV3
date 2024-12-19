@@ -10,7 +10,6 @@ const osuApi = new osu.Api(process.env.OSU_API_KEY, {
 /**
 * @type {import('commandkit').CommandData}
 */
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('osu')
@@ -19,7 +18,11 @@ module.exports = {
             option.setName('username')
                 .setDescription('Nombre de usuario de osu!')
                 .setRequired(true)),
-    async execute(interaction) {
+
+  /**
+   * @param {import('commandkit').SlashCommandProps} param0
+   */
+    run: async ({ interaction }) => {
         const username = interaction.options.getString('username');
 
         try {
@@ -54,5 +57,5 @@ module.exports = {
                 .setTimestamp();
             interaction.reply({ embeds: [embed] });
         }
-    }
+    },
 };
