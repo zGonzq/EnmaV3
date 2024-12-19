@@ -84,7 +84,7 @@ module.exports = {
         const embed = new EmbedBuilder()
           .setTitle('Lista de Tareas')
           .setDescription('No tienes tareas en tu lista.')
-          .setColor('Blue');
+          .setColor('Blurple');
 
         return interaction.reply({ embeds: [embed], ephemeral: true });
       }

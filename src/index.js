@@ -32,6 +32,7 @@ try
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
             { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
             { name: `Obten ayuda /help.`, type: ActivityType.Playing },
+            { name: `Última actualización: To-do`, type: ActivityType.Listening },
         ];
     
         let i = 0;
