@@ -42,7 +42,7 @@ module.exports = {
                     { name: 'Nivel', value: `${Math.round(user.level)}`, inline: true },
                     { name: 'Precisión', value: `${user.accuracyFormatted}`, inline: true },
                     { name: 'Jugadas', value: `${user.counts.plays}`, inline: true },
-                    { name: 'SS+ / SS / S+ / S / A', value: `${user.counts.SSH} / ${user.counts.SS} / ${user.counts.S} / ${user.counts.S} / ${user.counts.A}`, inline: false },
+                    { name: 'SS+ / SS / S+ / S / A', value: `${user.counts.SSH} / ${user.counts.SS} / ${user.counts.SH} / ${user.counts.S} / ${user.counts.A}`, inline: false },
                 )
                 .setImage(`https://lemmmy.pw/osusig/sig.php?colour=hexff66aa&uname=${user.name}&pp=2&countryrank&flagshadow&darktriangles&onlineindicator=undefined&xpbar&xpbarhex`)
                 .setColor('#FF66AA')
