@@ -98,7 +98,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle('Lista de Tareas')
         .setDescription(taskList)
-        .setColor('Blue');
+        .setColor('Blurple');
 
       return interaction.reply({ embeds: [embed], ephemeral: true });
 
