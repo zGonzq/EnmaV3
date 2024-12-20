@@ -29,7 +29,10 @@ try
 {
     client.login(process.env.TOKEN).then(() => {
 
-        const userCount = client.guilds.cache.reduce((a, c) => a + c.members.cache.size, 0)
+        let userCount = 0;
+        client.guilds.cache.forEach(guild =>
+            guild.members.cache.forEach(() => userCount++)
+          )
 
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
