@@ -1,14 +1,13 @@
 require('dotenv/config');
 
-const { Client, IntentsBitField, ActivityType } = require('discord.js');
+const { Client,GatewayIntentBits, IntentsBitField, ActivityType } = require('discord.js');
 const { CommandKit } = require('commandkit');
 const { join } = require('path');
 
 const mongoose = require('mongoose');
 
 const client = new Client({
-    intents: 
-        3276799
+    intents: Object.values(GatewayIntentBits)
 });
 
 new CommandKit({
@@ -25,33 +24,31 @@ require("./handler/anticrash")(client);
 mongoose.set('strictQuery', false);
 await mongoose.connect(process.env.MONGO_URI);
 
-let userCount = 0;
-client.guilds.cache.forEach(guild =>
-    guild.members.cache.forEach(() => userCount++)
-)
+
 
 try
 {
+    client.login(process.env.TOKEN)
 
-
-    client.login(process.env.TOKEN).then(() => {
+    client.on("ready", () => {
+        const userCount = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
             { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
-            { name: `Obten ayuda /help.`, type: ActivityType.Playing },
-            { name: `Última actualización: To-do`, type: ActivityType.Listening },
+            { name: `Con ${userCount} usuarios. 🌍`, type: ActivityType.Watching },
+            { name: `Obten ayuda /help. 💡`, type: ActivityType.Playing },
+            { name: `Última actualización: To-do 📌`, type: ActivityType.Listening },
+
         ];
     
         let i = 0;
         setInterval(() => {
             const activity = activities[i];
-            client.user.setActivity(activity.name, { type: activity.type });
+            client.user.setActivity(activity.name, { type: activity.type  } );
             i = ++i % activities.length;
-        }, 20000);
-    
-    });;
-    
-}
+        }, 15000);
+})}
+
 catch (error)
 {
     console.error(error);
