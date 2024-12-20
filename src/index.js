@@ -25,19 +25,15 @@ require("./handler/anticrash")(client);
 mongoose.set('strictQuery', false);
 await mongoose.connect(process.env.MONGO_URI);
 
-// funcion que buscara en todos los servidores en los que este el bot y sumara a todos los usuarios para conseguir el total de usuarios
-
-
-
 try
 {
     client.login(process.env.TOKEN).then(() => {
 
-        const userCount = client.guilds.cache.reduce((a, g) => a+g.memberCount, 0)
+        const userCount = client.guilds.cache.reduce((a, c) => a + c.members.cache.size, 0)
 
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
-            { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
+            { name: `En ${client.guilds.cache.size} servidores ${userCount}. 🚀`, type: ActivityType.Watching },
             { name: `Obten ayuda /help.`, type: ActivityType.Playing },
             { name: `Última actualización: To-do`, type: ActivityType.Listening },
         ];
