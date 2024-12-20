@@ -25,18 +25,19 @@ require("./handler/anticrash")(client);
 mongoose.set('strictQuery', false);
 await mongoose.connect(process.env.MONGO_URI);
 
+let userCount = 0;
+client.guilds.cache.forEach(guild =>
+    guild.members.cache.forEach(() => userCount++)
+)
+
 try
 {
+
+
     client.login(process.env.TOKEN).then(() => {
-
-        let userCount = 0;
-        client.guilds.cache.forEach(guild =>
-            guild.members.cache.forEach(() => userCount++)
-          )
-
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
-            { name: `En ${client.guilds.cache.size} servidores ${userCount}. 🚀`, type: ActivityType.Watching },
+            { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
             { name: `Obten ayuda /help.`, type: ActivityType.Playing },
             { name: `Última actualización: To-do`, type: ActivityType.Listening },
         ];
@@ -46,7 +47,7 @@ try
             const activity = activities[i];
             client.user.setActivity(activity.name, { type: activity.type });
             i = ++i % activities.length;
-        }, 30000);
+        }, 20000);
     
     });;
     
