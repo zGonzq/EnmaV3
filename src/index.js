@@ -37,7 +37,7 @@ try
 
         const activities = [
             { name: `Nueva apariencia. ✨`, type: ActivityType.Streaming },
-            { name: `En ${client.guilds.cache.size} servidores con ${userCount} usuarios. 🚀`, type: ActivityType.Watching },
+            { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
             { name: `Obten ayuda /help.`, type: ActivityType.Playing },
             { name: `Última actualización: To-do`, type: ActivityType.Listening },
         ];
