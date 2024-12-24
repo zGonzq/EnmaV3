@@ -24,7 +24,6 @@ require("./handler/anticrash")(client);
 
 const distube = new DisTube(client, {
     plugins: [new YtDlpPlugin({ cookies: '../youtube_cookies.txt' })],
-    leaveOnStop: false,
 });
 
 client.distube = distube;
