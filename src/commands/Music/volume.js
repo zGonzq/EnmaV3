@@ -1,6 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
+      /** @type {import('commandkit').CommandOptions} */
+  options: {
+    devOnly: true,
+  },
     data: new SlashCommandBuilder()
         .setName('volume')
         .setDescription('Ajusta el volumen de la música')

@@ -3,6 +3,10 @@ const ytSearch = require('yt-search');
 
 
 module.exports = {
+      /** @type {import('commandkit').CommandOptions} */
+  options: {
+    devOnly: true,
+  },
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('Reproduce una canción')
