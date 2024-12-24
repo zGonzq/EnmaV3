@@ -10,6 +10,7 @@ const emojis = {
     util: '🎇',
     integrations: '🤝',
     admin: '🔧',
+    music: '🎵',
 };
 
 const ignoredFolders = ['dev', 'context'];
