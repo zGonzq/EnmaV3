@@ -39,6 +39,7 @@ module.exports = async (client) => {
         if (!messageToUpdate) {
             messageToUpdate = await channel.send({ embeds: [embed] });
         } else {
+            if (messageToUpdate.author.id !== client.user.id) return;
             messageToUpdate.edit({ embeds: [embed] });
             }
         } catch (error) {

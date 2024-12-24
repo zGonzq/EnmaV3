@@ -8,6 +8,10 @@ module.exports = (client) => {
     const channelId = '1188964850282541157';
     const statusChannel = client.channels.cache.get(channelId);
 
+
+
+
+
     if (!statusChannel) {
         console.error(`No se pudo encontrar el canal con la ID ${channelId}`);
         return;
@@ -17,6 +21,8 @@ module.exports = (client) => {
         const statusEmbed = generateStatusEmbed(client);
 
         const lastMessage = (await statusChannel.messages.fetch({ limit: 5 })).first();
+
+        if (lastMessage.author.id !== client.user.id) return;
 
         if (lastMessage) {
             await lastMessage.edit({ embeds: [statusEmbed] });
