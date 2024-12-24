@@ -5,7 +5,7 @@ const { CommandKit } = require('commandkit');
 const { join } = require('path');
 const mongoose = require('mongoose');
 const { DisTube } = require('distube');
-const { YtDlpPlugin } = require('distube-yt-dlp-exec');
+const { YtDlpPlugin } = require('@distube/yt-dlp');
 
 const client = new Client({
     intents: Object.values(GatewayIntentBits)
