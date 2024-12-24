@@ -47,4 +47,18 @@ module.exports = (client) => {
             await queue.textChannel.send({ embeds: [embed] });
         }
     });
+
+    // Manejar el evento de error
+    client.distube.on('error', (channel, error) => {
+        if (error.message.includes('TimeoutNegativeWarning')) {
+            // Ignorar el error TimeoutNegativeWarning
+            console.warn('TimeoutNegativeWarning ignorado');
+        } else {
+            console.error(error);
+            const embed = new EmbedBuilder()
+                .setColor('#FF0000')
+                .setDescription('Hubo un error al intentar reproducir la canción.');
+            channel.send({ embeds: [embed] });
+        }
+    });
 };
