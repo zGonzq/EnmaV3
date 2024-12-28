@@ -50,18 +50,23 @@ module.exports = async (client) => {
                 const fiveMinutesAgo = new Date(now - 5 * 60 * 1000);
 
                 if (publishedAt > fiveMinutesAgo) {
+                    // Validar y truncar la descripción
+                    const description = latestVideo.snippet.description 
+                        ? latestVideo.snippet.description.slice(0, 4096)
+                        : 'Sin descripción';
+                
                     const embed = new EmbedBuilder()
                         .setColor('#FF0000')
                         .setTitle(latestVideo.snippet.title)
                         .setURL(`https://www.youtube.com/watch?v=${videoId}`)
-                        .setDescription(latestVideo.snippet.description)
+                        .setDescription(description)
                         .setThumbnail(latestVideo.snippet.thumbnails.high.url)
                         .addFields(
-                            { name: 'Canal', value: latestVideo.snippet.channelTitle, inline: true },
+                            { name: 'Canal', value: latestVideo.snippet.channelTitle || 'Canal desconocido', inline: true },
                             { name: 'Publicado', value: `<t:${Math.floor(publishedAt.getTime() / 1000)}:R>`, inline: true }
                         )
                         .setTimestamp();
-
+                
                     await channel.send({ content: '@everyone ¡Nuevo video!', embeds: [embed] });
                 }
             } catch (error) {
