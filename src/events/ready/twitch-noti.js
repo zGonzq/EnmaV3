@@ -52,7 +52,7 @@ module.exports = async (client) => {
                             .setURL(`https://twitch.tv/${twitchUser.username}`)
                             .setTimestamp();
 
-                        await channel.send({ embeds: [embed] });
+                        await channel.send({ content: `📌 @everyone ${twitchUser.username} está en directo en Twitch! <:twitch:1322635205261004961>`, embeds: [embed] });
                         twitchUser.status = 'online';
                         await notification.save();
                     } else if (!isLive && twitchUser.status === 'online') {

@@ -69,16 +69,15 @@ module.exports = async (client) => {
                         .setThumbnail(await getChannelIcon(notification.youtube.channelId))
                         .setImage(latestVideo.snippet.thumbnails.high.url)
                         .addFields(
-                            { name: 'Canal', value: latestVideo.snippet.channelTitle || 'Canal desconocido', inline: true },
                             { name: 'Publicado', value: `<t:${Math.floor(publishedAt.getTime() / 1000)}:R>`, inline: true }
                         )
                         .setTimestamp();
 
-                    await channel.send({ content: '@everyone ¡Nuevo video!', embeds: [embed] });
+                    await channel.send({ content: `📌 @everyone Nuevo video de ${latestVideo.snippet.channelTitle} en YouTube! <:youtube:1322635207282528256>`, embeds: [embed] });
                 }
             } catch (error) {
                 console.error('[YouTube] Error en notificaciones:', error);
             }
         }
-    }, 30000);
+    }, 200000); 
 };
