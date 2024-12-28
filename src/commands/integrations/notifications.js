@@ -50,33 +50,11 @@ module.exports = {
 
     run: async ({ interaction }) => {
         const subcommand = interaction.options.getSubcommand();
-        const channel = interaction.options.getChannel('channel');
         const embed = new EmbedBuilder();
-
-        if (!channel.permissionsFor(interaction.guild.members.me).has(PermissionsBitField.Flags.SendMessages)) {
-            return interaction.reply({
-                embeds: [embed.setDescription('No tengo permisos para enviar mensajes en ese canal.').setColor('Red')],
-                ephemeral: true
-            });
-        }
-
-        let notifications = await Notifications.findOne({ guildId: interaction.guild.id });
-
-        if (!notifications) {
-            notifications = new Notifications({
-                guildId: interaction.guild.id,
-                channelId: channel.id,
-                twitch: [],
-                youtube: {}
-            });
-        } else {
-            notifications.channelId = channel.id;
-        }
 
         if (subcommand === 'remove') {
             const type = interaction.options.getString('type');
             const identifier = interaction.options.getString('identifier');
-            const embed = new EmbedBuilder();
 
             let notifications = await Notifications.findOne({ guildId: interaction.guild.id });
             
@@ -100,13 +78,13 @@ module.exports = {
                 notifications.twitch.splice(userIndex, 1);
                 await notifications.save();
 
-                embed.setDescription(`Se eliminaron las notificaciones de Twitch para ${identifier}`)
-                    .setColor('Green');
-
+                return interaction.reply({
+                    embeds: [embed.setDescription(`Se eliminaron las notificaciones de Twitch para ${identifier}`).setColor('Green')]
+                });
             } else if (type === 'youtube') {
-                if (!notifications.youtube.channelId || notifications.youtube.channelId !== identifier) {
+                if (!notifications.youtube.channelId) {
                     return interaction.reply({
-                        embeds: [embed.setDescription('No se encontró ese canal de YouTube en la configuración.').setColor('Red')],
+                        embeds: [embed.setDescription('No hay canal de YouTube configurado.').setColor('Red')],
                         ephemeral: true
                     });
                 }
@@ -114,13 +92,20 @@ module.exports = {
                 notifications.youtube = {};
                 await notifications.save();
 
-                embed.setDescription('Se eliminaron las notificaciones de YouTube')
-                    .setColor('Green');
+                return interaction.reply({
+                    embeds: [embed.setDescription('Se eliminaron las notificaciones de YouTube').setColor('Green')]
+                });
             }
-
-            return interaction.reply({ embeds: [embed] });
         }
 
+        const channel = interaction.options.getChannel('channel');
+
+        if (!channel || !channel.permissionsFor(interaction.guild.members.me).has(PermissionsBitField.Flags.SendMessages)) {
+            return interaction.reply({
+                embeds: [embed.setDescription('No tengo permisos para enviar mensajes en ese canal.').setColor('Red')],
+                ephemeral: true
+            });
+        }
         if (subcommand === 'twitch') {
             const username = interaction.options.getString('username');
             
