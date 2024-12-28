@@ -8,8 +8,8 @@ const notificationsSchema = new Schema({
         status: { type: String, default: 'offline' }
     }],
     youtube: {
-        channelId: { type: String }
+        channelId: { type: String },
+        lastVideoId: { type: String, default: '' }
     }
 });
-
 module.exports = model('Notifications', notificationsSchema);

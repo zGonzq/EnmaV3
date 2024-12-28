@@ -47,15 +47,13 @@ module.exports = async (client) => {
                 const channelExists = await checkYoutubeChannel(notification.youtube.channelId);
                 if (!channelExists) continue;
 
-                const latestVideo = await getLatestVideo(notification.youtube.channelId);
+               const latestVideo = await getLatestVideo(notification.youtube.channelId);
                 if (!latestVideo) continue;
 
                 const videoId = latestVideo.id.videoId;
-                const publishedAt = new Date(latestVideo.snippet.publishedAt);
-                const now = new Date();
-                const fiveMinutesAgo = new Date(now - 5 * 60 * 1000);
-
-                if (publishedAt > fiveMinutesAgo) {
+                
+                // Verificar si el video es nuevo comparando IDs
+                if (videoId !== notification.youtube.lastVideoId) {
                     const title = latestVideo.snippet.title || 'Sin título';
                     const description = latestVideo.snippet.description 
                         ? latestVideo.snippet.description.slice(0, 4000)
@@ -69,15 +67,18 @@ module.exports = async (client) => {
                         .setThumbnail(await getChannelIcon(notification.youtube.channelId))
                         .setImage(latestVideo.snippet.thumbnails.high.url)
                         .addFields(
-                            { name: 'Publicado', value: `<t:${Math.floor(publishedAt.getTime() / 1000)}:R>`, inline: true }
+                            { name: 'Publicado', value: `<t:${Math.floor(new Date(latestVideo.snippet.publishedAt).getTime() / 1000)}:R>`, inline: true }
                         )
                         .setTimestamp();
 
                     await channel.send({ content: `📌 @everyone Nuevo video de ${latestVideo.snippet.channelTitle} en YouTube! <:youtube:1322635207282528256>`, embeds: [embed] });
+
+                    notification.youtube.lastVideoId = videoId;
+                    await notification.save();
                 }
             } catch (error) {
                 console.error('[YouTube] Error en notificaciones:', error);
             }
         }
-    }, 200000); 
+    }, 90000); 
 };
