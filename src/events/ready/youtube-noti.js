@@ -90,5 +90,5 @@ module.exports = async (client) => {
                 console.error('[YouTube] Stack:', error.stack);
             }
         }
-    }, 30000);
+    }, 300000 );
 };
