@@ -66,7 +66,7 @@ module.exports = async (client) => {
                         .setTitle(title)
                         .setURL(`https://www.youtube.com/watch?v=${videoId}`)
                         .setDescription(description)
-                        .setThumbnail(await getChannelIcon(notification.youtube.channelId))
+                        .setAuthor({ name: latestVideo.snippet.channelTitle, iconURL: `${await getChannelIcon(notification.youtube.channelId)}` })
                         .setImage(latestVideo.snippet.thumbnails.high.url)
                         .addFields(
                             { name: 'Publicado', value: `<t:${Math.floor(new Date(latestVideo.snippet.publishedAt).getTime() / 1000)}:R>`, inline: true }

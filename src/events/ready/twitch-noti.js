@@ -42,8 +42,8 @@ module.exports = async (client) => {
                         const embed = new EmbedBuilder()
                             .setColor('#6441a5')
                             .setTitle(`¡${twitchUser.username} está en directo!`)
-                            .setThumbnail(avatar.data)
                             .setDescription(title.data || 'Sin título')
+                            .setAuthor({ name: twitchUser.username, iconURL: `${avatar.data}`})
                             .addFields(
                                 { name: 'Juego', value: game.data || 'Desconocido', inline: true },
                                 { name: 'Tiempo en directo', value: uptime.data, inline: true }
