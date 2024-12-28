@@ -51,12 +51,12 @@ module.exports = {
     run: async ({ interaction }) => {
         const subcommand = interaction.options.getSubcommand();
         const embed = new EmbedBuilder();
+        let notifications = await Notifications.findOne({ guildId: interaction.guild.id });
 
         if (subcommand === 'remove') {
             const type = interaction.options.getString('type');
             const identifier = interaction.options.getString('identifier');
 
-            let notifications = await Notifications.findOne({ guildId: interaction.guild.id });
             
             if (!notifications) {
                 return interaction.reply({
