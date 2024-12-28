@@ -1,7 +1,7 @@
 const { ActivityType } = require('discord.js');
 /** * @param {import('discord.js').Client} client */
 module.exports = (client) => {
-    client.user.setStatus('idle');
+    client.user.setStatus('online');
     
     const userCount = client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
     const activities = [
@@ -9,7 +9,8 @@ module.exports = (client) => {
         { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
         { name: `Con ${userCount} usuarios. 🌍`, type: ActivityType.Watching },
         { name: `Obten ayuda /help. 💡`, type: ActivityType.Playing },
-        { name: `Última actualización: To-do 📌`, type: ActivityType.Listening },
+        { name: `Última actualización: Notifications 📌`, type: ActivityType.Listening },
+
     ];
     
     let i = 0;
