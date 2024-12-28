@@ -51,9 +51,11 @@ module.exports = async (client) => {
                 if (!latestVideo) continue;
 
                 const videoId = latestVideo.id.videoId;
+                const publishedAt = new Date(latestVideo.snippet.publishedAt);
+                const now = new Date();
+                const tenMinutesAgo = new Date(now - 10 * 60 * 1000);
                 
-                // Verificar si el video es nuevo comparando IDs
-                if (videoId !== notification.youtube.lastVideoId) {
+                if (videoId !== notification.youtube.lastVideoId && publishedAt > tenMinutesAgo) {
                     const title = latestVideo.snippet.title || 'Sin título';
                     const description = latestVideo.snippet.description 
                         ? latestVideo.snippet.description.slice(0, 4000)

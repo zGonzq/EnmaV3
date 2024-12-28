@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, models } = require('mongoose');
 
 const notificationsSchema = new Schema({
     guildId: { type: String, required: true },
@@ -12,4 +12,4 @@ const notificationsSchema = new Schema({
         lastVideoId: { type: String, default: '' }
     }
 });
-module.exports = model('Notifications', notificationsSchema);
+module.exports = models.Notifications || model('Notifications', notificationsSchema);
