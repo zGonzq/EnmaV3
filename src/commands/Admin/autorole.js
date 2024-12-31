@@ -177,7 +177,7 @@ module.exports = {
         
                 embed.setTitle('Conjuntos de Autoroles')
                     .setDescription(description.join('\n\n'))
-                    .setColor('Blue');
+                    .setColor('Blurple');
                 
                 return interaction.reply({ embeds: [embed] });
             } catch (error) {
@@ -233,7 +233,7 @@ module.exports = {
             const messageEmbed = new EmbedBuilder()
                 .setTitle(`Autoroles - ${title}`)
                 .setDescription('Haz clic en los botones para obtener o remover los roles')
-                .setColor('Blue');
+                .setColor('Random');
 
             await channel.send({ embeds: [messageEmbed], components: rows });
             return interaction.reply({
