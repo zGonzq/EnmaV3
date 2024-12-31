@@ -209,9 +209,8 @@ module.exports = {
                 const role = interaction.guild.roles.cache.get(roleId);
                 return {
                     customId: `autorole_${roleId}`,
-                    emoji: '✨',
                     label: role.name,
-                    style: 1
+                    style: 2
                 };
             });
 
@@ -222,7 +221,6 @@ module.exports = {
                         new ButtonBuilder()
                             .setCustomId(button.customId)
                             .setLabel(button.label)
-                            .setEmoji(button.emoji)
                             .setStyle(button.style)
                     )
                 );
