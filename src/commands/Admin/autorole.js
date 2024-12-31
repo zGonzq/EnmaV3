@@ -229,7 +229,7 @@ module.exports = {
 
 
             const messageEmbed = new EmbedBuilder()
-                .setTitle(`Autoroles - ${title}`)
+                .setTitle(`${title}`)
                 .setDescription('Haz clic en los botones para obtener o remover los roles')
                 .setColor('Random');
 
