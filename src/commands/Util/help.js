@@ -13,7 +13,7 @@ const emojis = {
     music: '🎵',
 };
 
-const ignoredFolders = ['dev', 'context'];
+const ignoredFolders = ['dev', 'context', 'music'];
 
 function getCommands(client, name) {
     const getCommandID = client.application.commands.cache

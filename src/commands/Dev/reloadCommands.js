@@ -25,24 +25,27 @@ module.exports = {
     const subCommand = interaction.options.getSubcommand(); 
 
     if (subCommand === 'all') {
-        embed.setDescription('Todos los archivos han sido recargados.');
-        interaction.reply({ embeds: [embed] });
-        await handler.reloadCommands();
-        await handler.reloadEvents();
-        await handler.reloadValidations();
+      
+      await handler.reloadCommands();
+      await handler.reloadEvents();
+      await handler.reloadValidations();
+
+      embed.setDescription('Todos los archivos han sido recargados.');
+      interaction.reply({ embeds: [embed] });
 
 
 
     } else if (subCommand === 'events') {
+        await handler.reloadEvents();
         embed.setDescription('Los eventos han sido recargados.');
         interaction.reply({ embeds: [embed] });
-        await handler.reloadEvents();
 
 
     } else if (subCommand === 'commands') {
-                embed.setDescription('Los comandos han sido recargados.');
-        interaction.reply({ embeds: [embed] });
+
         await handler.reloadCommands();
+        embed.setDescription('Los comandos han sido recargados.');
+        interaction.reply({ embeds: [embed] });
 
     }
     
