@@ -9,7 +9,7 @@ module.exports = (client) => {
         { name: `En ${client.guilds.cache.size} servidores. 🚀`, type: ActivityType.Watching },
         { name: `Con ${userCount} usuarios. 🌍`, type: ActivityType.Watching },
         { name: `Obten ayuda /help. 💡`, type: ActivityType.Playing },
-        { name: `Última actualización: Notifications 📌`, type: ActivityType.Listening },
+        { name: `Última actualización: Autoroles 📌`, type: ActivityType.Listening },
 
     ];
     

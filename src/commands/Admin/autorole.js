@@ -227,7 +227,6 @@ module.exports = {
                 rows.push(row);
             }
 
-
             const messageEmbed = new EmbedBuilder()
                 .setTitle(`${title}`)
                 .setDescription('Haz clic en los botones para obtener o remover los roles')
