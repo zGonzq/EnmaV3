@@ -53,7 +53,7 @@ module.exports = async (client) => {
                 const videoId = latestVideo.id.videoId;
                 const publishedAt = new Date(latestVideo.snippet.publishedAt);
                 const now = new Date();
-                const tenMinutesAgo = new Date(now - 10 * 60 * 1000);
+                const tenMinutesAgo = new Date(now - 20 * 60 * 1000);
                 
                 if (videoId !== notification.youtube.lastVideoId && publishedAt > tenMinutesAgo) {
                     const title = latestVideo.snippet.title || 'Sin título';
@@ -82,5 +82,5 @@ module.exports = async (client) => {
                 console.error('[YouTube] Error en notificaciones:', error);
             }
         }
-    }, 90000); 
+    }, 15 * 60 * 1000);
 };
