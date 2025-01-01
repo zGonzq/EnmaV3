@@ -178,21 +178,21 @@ module.exports = {
                 creatorId: interaction.guild.ownerId,
                 enabled: true,
                 eventType: 1,
-                triggerType: 3,
+                triggerType: 1, // 1 = KEYWORD para invitaciones
                 triggerMetadata: {
-                  keywordFilter: ["discord.gg", "discord.com/invite"],
-                  regexPatterns: ["(discord\\.gg|\\.com\\/invite)\\/[a-zA-Z0-9]+"]
+                  presets: [1], // Preset de Discord para invitaciones
+                  allowList: [] // Lista vacía para no permitir excepciones
                 },
                 actions: [
                   {
-                    type: 1,
+                    type: 1, // Tipo 1 = bloquear mensaje
                     metadata: {
                       channel: interaction.channel,
                       durationSeconds: 10,
-                      customMessage: "Mensaje automáticamente borrado por contener una invitación | Enma",
-                    },
-                  },
-                ],
+                      customMessage: "Mensaje automáticamente borrado por contener una invitación | Enma"
+                    }
+                  }
+                ]
               });
               break;
         }
