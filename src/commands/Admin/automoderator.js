@@ -70,7 +70,7 @@ module.exports = {
                   metadata: {
                     channel: interaction.channel,
                     durationSeconds: 10,
-                    customMessage: "Mensaje automáticamente borrado por spam",
+                    customMessage: "Mensaje automáticamente borrado por spam | Enma",
                   },
                 },
               ],
@@ -94,7 +94,7 @@ module.exports = {
                     channel: interaction.channel,
                     durationSeconds: 10,
                     customMessage:
-                      "Mensaje automáticamente borrado por menciones excesivas",
+                      "Mensaje automáticamente borrado por menciones excesivas | Enma",
                   },
                 },
               ],
@@ -118,7 +118,7 @@ module.exports = {
                     channel: interaction.channel,
                     durationSeconds: 10,
                     customMessage:
-                      "Mensaje automáticamente borrado por contener palabras prohibidas",
+                      "Mensaje automáticamente borrado por contener palabras prohibidas | Enma",
                   },
                 },
               ],
@@ -143,7 +143,7 @@ module.exports = {
                     channel: interaction.channel,
                     durationSeconds: 10,
                     customMessage:
-                      "Mensaje eliminado por contenido sexual inapropiado",
+                      "Mensaje eliminado por contenido sexual inapropiado | Enma",
                   },
                 },
               ],
@@ -166,35 +166,35 @@ module.exports = {
                     channel: interaction.channel,
                     durationSeconds: 10,
                     customMessage:
-                      "Mensaje eliminado por contenido sexual inapropiado",
+                      "Mensaje eliminado por contenido sexual inapropiado | Enma",
                   },
                 },
               ],
             });
 
-          case "invites":
-            await interaction.guild.autoModerationRules.create({
-              name: "Prevenir Invitaciones",
-              creatorId: interaction.guild.ownerId,
-              enabled: true,
-              eventType: 1,
-              triggerType: 1,
-              triggerMetadata: {
-                presets: [1],
-              },
-              actions: [
-                {
-                  type: 1,
-                  metadata: {
-                    channel: interaction.channel,
-                    durationSeconds: 10,
-                    customMessage:
-                      "Mensaje automáticamente borrado por contener una invitación",
-                  },
+            case "invites":
+              await interaction.guild.autoModerationRules.create({
+                name: "Prevenir Invitaciones",
+                creatorId: interaction.guild.ownerId,
+                enabled: true,
+                eventType: 1,
+                triggerType: 3,
+                triggerMetadata: {
+                  keywordFilter: ["discord.gg", "discord.com/invite"],
+                  regexPatterns: ["(discord\\.gg|\\.com\\/invite)\\/[a-zA-Z0-9]+"]
                 },
-              ],
-            });
-            break;
+                actions: [
+                  {
+                    type: 1,
+                    metadata: {
+                      channel: interaction.channel,
+                      durationSeconds: 10,
+                      customMessage: "Mensaje automáticamente borrado por contener una invitación | Enma",
+                    },
+                  },
+                ],
+              });
+              break;
         }
 
         embed
