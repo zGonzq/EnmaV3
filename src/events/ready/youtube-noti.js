@@ -1,35 +1,38 @@
 const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 const Notifications = require('../../models/notifications');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (client) => {
-
-    const getChannelIcon = async (channelId) => {
+    const getYoutubeData = async (channelId) => {
         try {
-            const response = await axios.get(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${process.env.YOUTUBE_API_KEY}`);
-            return response.data.items[0].snippet.thumbnails.default.url;
-        } catch (error) {   
-            console.error('[YouTube] Error obteniendo icono de canal:', error.message);
-            return null;
-        }
-    }
+            const response = await axios.get(
+                `https://www.googleapis.com/youtube/v3/search?` +
+                `part=snippet` +
+                `&channelId=${channelId}` +
+                `&maxResults=1` +
+                `&order=date` +
+                `&type=video` +
+                `&key=${process.env.YOUTUBE_API_KEY}`
+            );
 
-    const checkYoutubeChannel = async (channelId) => {
-        try {
-            const response = await axios.get(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${process.env.YOUTUBE_API_KEY}`);
-            return response.data.items.length > 0;
+            if (!response.data.items || response.data.items.length === 0) {
+                return null;
+            }
+
+            const video = response.data.items[0];
+            return {
+                exists: true,
+                videoId: video.id.videoId,
+                title: video.snippet.title,
+                description: video.snippet.description,
+                thumbnail: video.snippet.thumbnails.high.url,
+                channelTitle: video.snippet.channelTitle,
+                publishedAt: video.snippet.publishedAt,
+                channelIcon: video.snippet.thumbnails.default.url
+            };
         } catch (error) {
-            console.error('[YouTube] Error verificando canal:', error.message);
-            return false;
-        }
-    };
-
-    const getLatestVideo = async (channelId) => {
-        try {
-            const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=1&order=date&type=video&key=${process.env.YOUTUBE_API_KEY}`);
-            return response.data.items[0];
-        } catch (error) {
-            console.error('[YouTube] Error obteniendo último video:', error.message);
+            console.error('[YouTube] Error obteniendo datos:', error.message);
             return null;
         }
     };
@@ -44,43 +47,37 @@ module.exports = async (client) => {
             if (!channel) continue;
 
             try {
-                const channelExists = await checkYoutubeChannel(notification.youtube.channelId);
-                if (!channelExists) continue;
+                const youtubeData = await getYoutubeData(notification.youtube.channelId);
+                if (!youtubeData) continue;
 
-               const latestVideo = await getLatestVideo(notification.youtube.channelId);
-                if (!latestVideo) continue;
-
-                const videoId = latestVideo.id.videoId;
-                const publishedAt = new Date(latestVideo.snippet.publishedAt);
+                const publishedAt = new Date(youtubeData.publishedAt);
                 const now = new Date();
-                const tenMinutesAgo = new Date(now - 20 * 60 * 1000);
-                
-                if (videoId !== notification.youtube.lastVideoId && publishedAt > tenMinutesAgo) {
-                    const title = latestVideo.snippet.title || 'Sin título';
-                    const description = latestVideo.snippet.description 
-                        ? latestVideo.snippet.description.slice(0, 4000)
-                        : 'Sin descripción';
+                const MinutesAgo = new Date(now - 30 * 60 * 1000);
 
+                if (youtubeData.videoId !== notification.youtube.lastVideoId && publishedAt > MinutesAgo) {
                     const embed = new EmbedBuilder()
                         .setColor('#FF0000')
-                        .setTitle(title)
-                        .setURL(`https://www.youtube.com/watch?v=${videoId}`)
-                        .setDescription(description)
-                        .setAuthor({ name: latestVideo.snippet.channelTitle, iconURL: `${await getChannelIcon(notification.youtube.channelId)}` })
-                        .setImage(latestVideo.snippet.thumbnails.high.url)
+                        .setTitle(youtubeData.title)
+                        .setURL(`https://www.youtube.com/watch?v=${youtubeData.videoId}`)
+                        .setDescription(youtubeData.description.slice(0, 4000))
+                        .setAuthor({ name: youtubeData.channelTitle, iconURL: youtubeData.channelIcon })
+                        .setImage(youtubeData.thumbnail)
                         .addFields(
-                            { name: 'Publicado', value: `<t:${Math.floor(new Date(latestVideo.snippet.publishedAt).getTime() / 1000)}:R>`, inline: true }
+                            { name: 'Publicado', value: `<t:${Math.floor(publishedAt.getTime() / 1000)}:R>`, inline: true }
                         )
                         .setTimestamp();
 
-                    await channel.send({ content: `📌 @everyone Nuevo video de ${latestVideo.snippet.channelTitle} en YouTube! <:youtube:1322635207282528256>`, embeds: [embed] });
+                    await channel.send({ 
+                        content: `📌 @everyone Nuevo video de ${youtubeData.channelTitle} en YouTube! <:youtube:1322635207282528256>`, 
+                        embeds: [embed] 
+                    });
 
-                    notification.youtube.lastVideoId = videoId;
+                    notification.youtube.lastVideoId = youtubeData.videoId;
                     await notification.save();
                 }
             } catch (error) {
                 console.error('[YouTube] Error en notificaciones:', error);
             }
         }
-    }, 15 * 60 * 1000);
+    }, 900000);
 };
