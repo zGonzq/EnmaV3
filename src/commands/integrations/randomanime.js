@@ -20,15 +20,19 @@ module.exports = {
       embed.setTitle(anime.title)
         .setURL(anime.url)
         .setDescription(anime.synopsis || 'No hay sinopsis disponible.')
-        .setThumbnail(anime.images.jpg.image_url)
+        .setImage(anime.images.jpg.image_url)
         .addFields(
+          { name: 'Tipo', value: anime.type || 'No disponible', inline: true },
+          { name: 'Género', value: anime.genres.map(g => g.name).join(', ') || 'No disponible', inline: true },
+          { name: 'Puntuación', value: anime.score ? anime.score.toString() : 'No disponible', inline: true },
+
           { name: 'Título en inglés', value: anime.title_english || 'No disponible', inline: true },
           { name: 'Título en japonés', value: anime.title_japanese || 'No disponible', inline: true },
-          { name: 'Tipo', value: anime.type || 'No disponible', inline: true },
+          { name: 'Favoritos', value: anime.favorites ? anime.favorites.toString() : 'No disponible', inline: true },
+
           { name: 'Episodios', value: anime.episodes ? anime.episodes.toString() : 'No disponible', inline: true },
           { name: 'Estado', value: anime.status || 'No disponible', inline: true },
-          { name: 'Puntuación', value: anime.score ? anime.score.toString() : 'No disponible', inline: true },
-          { name: 'Favoritos', value: anime.favorites ? anime.favorites.toString() : 'No disponible', inline: true }
+          { name: 'Fecha de estreno', value: anime.aired.from || 'No disponible', inline: true },
         )
         .setColor('Random');
 
