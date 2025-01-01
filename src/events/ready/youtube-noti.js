@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 const Notifications = require('../../models/notifications');
-const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (client) => {
     const getYoutubeData = async (channelId) => {
