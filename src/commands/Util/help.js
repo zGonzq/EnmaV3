@@ -11,6 +11,7 @@ const emojis = {
     integrations: '🤝',
     admin: '🔧',
     music: '🎵',
+    automatic: '🤖',
 };
 
 const ignoredFolders = ['dev', 'context', 'music'];

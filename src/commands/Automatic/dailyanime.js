@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
-const DailyAnime = require('../../models/dailyAnime'); // Necesitarás crear este modelo
-const axios = require('axios');
+const DailyAnime = require('../../models/dailyAnime');
 
 module.exports = {
   data: new SlashCommandBuilder()
