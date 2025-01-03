@@ -28,7 +28,6 @@ const distube = new DisTube(client, {
 
 client.distube = distube;
 
-// Importar y usar los eventos de DisTube
 require('./utils/distubeEvents')(client);
 
 mongoose.set('strictQuery', false);

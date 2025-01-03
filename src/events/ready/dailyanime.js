@@ -3,30 +3,31 @@ const DailyAnime = require('../../models/dailyAnime');
 const axios = require('axios');
 
 async function getRandomSFWAnime() {
-    while (true) {
-      try {
-        const response = await axios.get('https://api.jikan.moe/v4/random/anime');
-        const anime = response.data.data;
+  while (true) {
+    try {
+    const response = await axios.get('https://api.jikan.moe/v4/random/anime');
+    const anime = response.data.data;
   
-        const isNSFW = anime.genres.some(genre => 
-          genre.name.toLowerCase() === 'hentai' || 
-          anime.rating === 'Rx - Hentai'
-        );
+    const isNSFW = anime.genres.some(genre => 
+      genre.name.toLowerCase() === 'hentai' || 
+      anime.rating === 'Rx - Hentai'
+    );
   
-        const validType = ['TV', 'Movie', 'OVA'].includes(anime.type);
-        const hasScore = anime.score && anime.score > 0;
-        const hasGenres = anime.genres && anime.genres.length > 0;
-        const hasSynopsis = anime.synopsis && anime.synopsis.length > 0;
+    const validType = ['TV', 'Movie', 'OVA'].includes(anime.type);
+    const validSource = ['Manga', 'Web manga', 'Light novel'].includes(anime.source);
+    const hasScore = anime.score && anime.score > 0;
+    const hasGenres = anime.genres && anime.genres.length > 0;
+    const hasSynopsis = anime.synopsis && anime.synopsis.length > 0;
   
-        if (!isNSFW && validType && hasScore && hasGenres && hasSynopsis) {
-          return anime;
-        }
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
-      } catch (error) {
-        console.error('Error al obtener anime:', error);
-        await new Promise(resolve => setTimeout(resolve, 5000)); 
-      }
+    if (!isNSFW && validType && validSource && hasScore && hasGenres && hasSynopsis) {
+      return anime;
     }
+    await new Promise(resolve => setTimeout(resolve, 1000)); 
+    } catch (error) {
+    console.error('Error al obtener anime:', error);
+    await new Promise(resolve => setTimeout(resolve, 5000)); 
+    }
+  }
   }
 
 /** @param {import('discord.js').Client} client */
