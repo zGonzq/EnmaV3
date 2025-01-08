@@ -4,14 +4,12 @@ const Logs = require('../../../models/logs');
 const transcript = require('discord-html-transcripts');
 
 module.exports = async (interaction) => {
-    console.log('ticketClose: Interaction received');
     if (!interaction.isButton() || !interaction.customId.startsWith('close_')) return;
 
     const [_, uuid] = interaction.customId.split('_');
-    console.log(`ticketClose: UUID extracted - ${uuid}`);
 
     const ticket = await Ticket.findOne({ channelId: interaction.channel.id });
-    console.log(`ticketClose: Ticket found - ${ticket ? ticket.title : 'No ticket found'}`);
+
 
     if (!ticket) {
         return interaction.reply({
@@ -45,5 +43,4 @@ module.exports = async (interaction) => {
         .setColor('Red');
 
     await interaction.reply({ embeds: [embed], components: [row], ephemeral: true });
-    console.log('ticketClose: Confirmation message sent');
 };

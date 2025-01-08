@@ -3,14 +3,11 @@ const Ticket = require('../../../models/tickets');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = async (interaction) => {
-    console.log('ticketCreate: Interaction received');
     if (!interaction.isButton() || !interaction.customId.startsWith('ticket_')) return;
 
     const [_, category, uuid] = interaction.customId.split('_');
-    console.log(`ticketCreate: Category - ${category}, UUID - ${uuid}`);
 
     const ticket = await Ticket.findOne({ guildId: interaction.guild.id, categories: category });
-    console.log(`ticketCreate: Ticket found - ${ticket ? ticket.title : 'No ticket found'}`);
 
     if (!ticket) {
         return interaction.reply({
@@ -38,11 +35,9 @@ module.exports = async (interaction) => {
             }
         ]
     });
-    console.log(`ticketCreate: Channel created - ${channelName}`);
 
     ticket.channelId = channel.id;
     await ticket.save();
-    console.log('ticketCreate: Ticket updated with channel ID');
 
     const closeButton = new ButtonBuilder()
         .setCustomId(`close_${uuid}`)
@@ -72,7 +67,6 @@ module.exports = async (interaction) => {
         .setColor('Blue');
 
     await channel.send({ embeds: [embed], components: [row] });
-    console.log('ticketCreate: Ticket management message sent');
 
     return interaction.reply({
         embeds: [new EmbedBuilder().setDescription(`Se ha creado el ticket en el canal ${channel}`).setColor('Green')],

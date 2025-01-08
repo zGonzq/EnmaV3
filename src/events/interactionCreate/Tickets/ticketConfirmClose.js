@@ -4,11 +4,9 @@ const Logs = require('../../../models/logs');
 const transcript = require('discord-html-transcripts');
 
 module.exports = async (interaction) => {
-    console.log('ticketConfirmClose: Interaction received');
     if (!interaction.isButton() || !interaction.customId.startsWith('confirm_close_')) return;
 
     const ticket = await Ticket.findOne({ channelId: interaction.channel.id });
-    console.log(`ticketConfirmClose: Ticket found - ${ticket ? ticket.title : 'No ticket found'}`);
 
     if (!ticket) {
         return interaction.reply({
@@ -23,7 +21,6 @@ module.exports = async (interaction) => {
         .setColor('Red');
 
     await interaction.reply({ embeds: [countdownEmbed] });
-    console.log('ticketConfirmClose: Countdown started');
 
     for (let i = 4; i >= 0; i--) {
         countdownEmbed.setDescription(`El ticket se cerrará en ${i} segundos...`);
@@ -32,7 +29,6 @@ module.exports = async (interaction) => {
     }
 
     const log = await Logs.findOne({ guildId: interaction.guild.id });
-    console.log(`ticketConfirmClose: Log found - ${log ? log.logChannelId : 'No log found'}`);
 
     if (log) {
         const logChannel = interaction.guild.channels.cache.get(log.logChannelId);
@@ -45,11 +41,9 @@ module.exports = async (interaction) => {
                 .setTimestamp();
 
             await logChannel.send({ embeds: [logEmbed], files: [transcriptFile] });
-            console.log('ticketConfirmClose: Log message sent');
         }
     }
 
     await interaction.channel.delete();
     await Ticket.deleteOne({ channelId: interaction.channel.id });
-    console.log('ticketConfirmClose: Ticket channel deleted and ticket removed from database');
 };
