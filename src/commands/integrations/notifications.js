@@ -53,21 +53,17 @@ module.exports = {
         const embed = new EmbedBuilder();
         let notifications = await Notifications.findOne({ guildId: interaction.guild.id });
 
+        if (!notifications) {
+            notifications = new Notifications({ guildId: interaction.guild.id, twitch: [], youtube: {} });
+        }
+
         if (subcommand === 'remove') {
             const type = interaction.options.getString('type');
             const identifier = interaction.options.getString('identifier');
 
-            
-            if (!notifications) {
-                return interaction.reply({
-                    embeds: [embed.setDescription('No hay notificaciones configuradas en este servidor.').setColor('Red')],
-                    ephemeral: true
-                });
-            }
-
             if (type === 'twitch') {
                 const userIndex = notifications.twitch.findIndex(user => user.username.toLowerCase() === identifier.toLowerCase());
-                
+
                 if (userIndex === -1) {
                     return interaction.reply({
                         embeds: [embed.setDescription('No se encontró ese usuario de Twitch en la configuración.').setColor('Red')],
@@ -106,9 +102,10 @@ module.exports = {
                 ephemeral: true
             });
         }
+
         if (subcommand === 'twitch') {
             const username = interaction.options.getString('username');
-            
+
             try {
                 const avatar = await axios.get(`https://decapi.me/twitch/avatar/${username}`);
                 if (avatar.data === 'Invalid Twitch user specified') {

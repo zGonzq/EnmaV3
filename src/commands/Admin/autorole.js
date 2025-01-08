@@ -165,7 +165,7 @@ module.exports = {
                     if (!ar || !ar.roles) return `**${ar.title}**\nSin roles configurados`;
         
                     const rolesText = ar.roles.length > 0 
-                        ? ar.roles.filter(roleId => roleId) // Filtrar IDs nulos
+                        ? ar.roles.filter(roleId => roleId)
                             .map(roleId => {
                                 const role = interaction.guild.roles.cache.get(roleId);
                                 return role ? `<@&${roleId}>` : 'Rol no encontrado';
