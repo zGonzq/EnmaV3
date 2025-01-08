@@ -110,7 +110,6 @@ module.exports = {
             const username = interaction.options.getString('username');
             
             try {
-                // Si no existe notifications, crear uno nuevo
                 if (!notifications) {
                     notifications = new Notifications({
                         guildId: interaction.guild.id,
