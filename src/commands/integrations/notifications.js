@@ -157,6 +157,7 @@ module.exports = {
                 .setDescription(`Las notificaciones para el canal de YouTube han sido configuradas en ${channel}.`)
                 .setColor('Green');
         }
+        
 
         interaction.reply({ embeds: [embed] });
     }
