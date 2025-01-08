@@ -32,7 +32,7 @@ module.exports = {
 
           { name: 'Episodios', value: anime.episodes ? anime.episodes.toString() : 'No disponible', inline: true },
           { name: 'Estado', value: anime.status || 'No disponible', inline: true },
-          { name: 'Año', value: anime.aired.from.year.toString() || 'No disponible', inline: true },
+          { name: 'Año', value: anime.aired.prop.from.year.toString() || 'No disponible', inline: true },
         )
         .setColor('Random');
 
