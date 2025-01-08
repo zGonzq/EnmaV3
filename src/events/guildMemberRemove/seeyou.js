@@ -1,6 +1,14 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const WelcomeSettings = require('../../models/welcomeSettings');
 
+const leaveMessages = [
+  `Lamentamos que {user} haya dejado {server}.`,
+  `¡Adiós {user}! Esperamos verte de nuevo en {server}.`,
+  `{user} ha dejado {server}. ¡Te extrañaremos!`,
+  `¡{user} ha salido de {server}! ¡Buena suerte!`,
+  `¡{user} se ha ido de {server}! ¡Hasta la próxima!`
+];
+
 /**
  * @param {import('discord.js').GuildMember} member
  */
@@ -22,22 +30,19 @@ module.exports = async (member) => {
     return;
   }
 
-  const leaveMessages = [
-    `Lamentamos que ${member.user} haya dejado ${member.guild.name}.`,
-    `¡Adiós ${member.user}! Esperamos verte de nuevo en ${member.guild.name}.`,
-    `${member.user} ha dejado ${member.guild.name}. ¡Te extrañaremos!`,
-    `¡${member.user} ha salido de ${member.guild.name}! ¡Buena suerte!`,
-    `¡${member.user} se ha ido de ${member.guild.name}! ¡Hasta la próxima!`
-  ];
+  let messageContent = settings.customLeaveMessage || 
+    leaveMessages[Math.floor(Math.random() * leaveMessages.length)];
 
-  const randomMessage = leaveMessages[Math.floor(Math.random() * leaveMessages.length)];
+  messageContent = messageContent
+    .replace(/{user}/g, member.user)
+    .replace(/{server}/g, member.guild.name);
 
   const embed = new EmbedBuilder()
-    .setTitle('¡Adiós! 👋')
-    .setDescription(randomMessage)
-    .setFooter({ text: `Ahora somos ${member.guild.memberCount} miembros.` })
+    .setTitle('¡Hasta pronto! 👋')
+    .setDescription(messageContent)
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-    .setColor('Red');
+    .setFooter({ text: `Ahora somos ${member.guild.memberCount} miembros.` })
+    .setColor('Random');
 
-  leaveChannel.send({ embeds: [embed] });
+  leaveChannel.send({ content: `${member.user}`, embeds: [embed] });
 };
