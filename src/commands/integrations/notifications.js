@@ -158,7 +158,6 @@ module.exports = {
                 .setColor('Green');
         }
         
-
         interaction.reply({ embeds: [embed] });
     }
 };
