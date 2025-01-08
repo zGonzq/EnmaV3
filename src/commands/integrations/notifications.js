@@ -53,17 +53,21 @@ module.exports = {
         const embed = new EmbedBuilder();
         let notifications = await Notifications.findOne({ guildId: interaction.guild.id });
 
-        if (!notifications) {
-            notifications = new Notifications({ guildId: interaction.guild.id, twitch: [], youtube: {} });
-        }
-
         if (subcommand === 'remove') {
             const type = interaction.options.getString('type');
             const identifier = interaction.options.getString('identifier');
 
+            
+            if (!notifications) {
+                return interaction.reply({
+                    embeds: [embed.setDescription('No hay notificaciones configuradas en este servidor.').setColor('Red')],
+                    ephemeral: true
+                });
+            }
+
             if (type === 'twitch') {
                 const userIndex = notifications.twitch.findIndex(user => user.username.toLowerCase() === identifier.toLowerCase());
-
+                
                 if (userIndex === -1) {
                     return interaction.reply({
                         embeds: [embed.setDescription('No se encontró ese usuario de Twitch en la configuración.').setColor('Red')],
@@ -102,11 +106,20 @@ module.exports = {
                 ephemeral: true
             });
         }
-
         if (subcommand === 'twitch') {
             const username = interaction.options.getString('username');
-
+            
             try {
+                // Si no existe notifications, crear uno nuevo
+                if (!notifications) {
+                    notifications = new Notifications({
+                        guildId: interaction.guild.id,
+                        channelId: channel.id,
+                        twitch: [],
+                        youtube: {}
+                    });
+                }
+        
                 const avatar = await axios.get(`https://decapi.me/twitch/avatar/${username}`);
                 if (avatar.data === 'Invalid Twitch user specified') {
                     return interaction.reply({
@@ -114,7 +127,7 @@ module.exports = {
                         ephemeral: true
                     });
                 }
-
+        
                 const existingUser = notifications.twitch.find(user => user.username === username);
                 if (existingUser) {
                     return interaction.reply({
@@ -122,14 +135,15 @@ module.exports = {
                         ephemeral: true
                     });
                 }
-
+        
+                notifications.channelId = channel.id;
                 notifications.twitch.push({ username, status: 'offline' });
                 await notifications.save();
-
+        
                 embed.setTitle('Notificaciones de Twitch')
                     .setDescription(`Las notificaciones para ${username} han sido configuradas en ${channel}.`)
                     .setColor('Green');
-
+        
             } catch (error) {
                 console.error('Error al configurar notificaciones de Twitch:', error);
                 embed.setDescription('Hubo un error al configurar las notificaciones.').setColor('Red');
