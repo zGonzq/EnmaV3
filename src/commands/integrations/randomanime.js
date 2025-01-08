@@ -11,6 +11,12 @@ module.exports = {
    * @param {import('commandkit').SlashCommandProps} param0
    */
   run: async ({ interaction }) => {
+    const searchingEmbed = new EmbedBuilder()
+      .setDescription('Buscando anime para recomendarte...')
+      .setColor('Random');
+
+    await interaction.reply({ embeds: [searchingEmbed] });
+
     const embed = new EmbedBuilder();
 
     try {
@@ -49,11 +55,11 @@ module.exports = {
         )
         .setColor('Random');
 
-      await interaction.reply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] });
 
     } catch (error) {
       console.log('Error al obtener el anime aleatorio:', error);
-      await interaction.reply({ content: 'No se pudo obtener un anime aleatorio. Inténtalo de nuevo más tarde.', ephemeral: true });
+      await interaction.editReply({ content: 'No se pudo obtener un anime aleatorio. Inténtalo de nuevo más tarde.', embeds: [], ephemeral: true });
     }
   },
 };
