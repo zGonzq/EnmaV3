@@ -12,7 +12,7 @@ module.exports = {
    */
   run: async ({ interaction }) => {
     const searchingEmbed = new EmbedBuilder()
-      .setDescription('Buscando anime para recomendarte...')
+      .setDescription('Buscando el anime perfecto...')
       .setColor('Random');
 
     await interaction.reply({ embeds: [searchingEmbed] });
