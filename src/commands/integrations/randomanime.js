@@ -14,8 +14,21 @@ module.exports = {
     const embed = new EmbedBuilder();
 
     try {
-      const response = await axios.get('https://api.jikan.moe/v4/random/anime');
-      const anime = response.data.data;
+      let anime;
+      let validAnime = false;
+
+      while (!validAnime) {
+        const response = await axios.get('https://api.jikan.moe/v4/random/anime');
+        anime = response.data.data;
+
+        const validType = ['TV', 'Movie', 'OVA'].includes(anime.type);
+        const validSource = ['Manga', 'Web manga', 'Light novel'].includes(anime.source);
+        const hasScore = anime.score && anime.score > 0;
+        const hasGenres = anime.genres && anime.genres.length > 0;
+        const hasSynopsis = anime.synopsis && anime.synopsis.length > 0;
+
+        validAnime = validType && validSource && hasScore && hasGenres && hasSynopsis;
+      }
 
       embed.setTitle(anime.title)
         .setURL(anime.url)
