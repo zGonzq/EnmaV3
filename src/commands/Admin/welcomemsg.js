@@ -8,6 +8,22 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionsBitField.Flags.Administrator)
     .addSubcommand(subcommand =>
       subcommand
+        .setName('message')
+        .setDescription('Configura mensajes personalizados')
+        .addStringOption(option => 
+          option.setName('type')
+            .setDescription('Tipo de mensaje a configurar')
+            .setRequired(true)
+            .addChoices(
+              { name: 'Bienvenida', value: 'welcome' },
+              { name: 'Despedida', value: 'leave' }
+            ))
+        .addStringOption(option =>
+          option.setName('message')
+            .setDescription('Mensaje personalizado. Usa {user} para mencionar al usuario y {server} para el nombre del servidor')
+            .setRequired(true)))
+    .addSubcommand(subcommand =>
+      subcommand
         .setName('enable')
         .setDescription('Habilita los mensajes de bienvenida y despedida')
         .addChannelOption(option => option.setName('welcomechannel').setDescription('Canal para los mensajes de bienvenida').setRequired(true))
@@ -32,6 +48,34 @@ module.exports = {
   run: async ({ interaction }) => {
     const embed = new EmbedBuilder();
     const subcommand = interaction.options.getSubcommand();
+
+
+    if (subcommand === 'message') {
+      const type = interaction.options.getString('type');
+      const message = interaction.options.getString('message');
+      
+      let settings = await WelcomeSettings.findOne({ guildId: interaction.guild.id });
+      if (!settings) {
+        return interaction.reply({
+          embeds: [embed.setDescription('Primero debes configurar los canales de bienvenida/despedida.').setColor('Red')],
+          ephemeral: true
+        });
+      }
+  
+      if (type === 'welcome') {
+        settings.customWelcomeMessage = message;
+      } else {
+        settings.customLeaveMessage = message;
+      }
+      
+      await settings.save();
+  
+      embed.setTitle('Mensaje Personalizado Configurado')
+        .setDescription(`El mensaje de ${type === 'welcome' ? 'bienvenida' : 'despedida'} ha sido actualizado.`)
+        .setColor('Green');
+      
+      interaction.reply({ embeds: [embed] });
+    }
 
     if (subcommand === 'enable') {
       const welcomeChannel = interaction.options.getChannel('welcomechannel');

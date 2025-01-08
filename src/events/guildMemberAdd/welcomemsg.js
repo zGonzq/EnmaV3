@@ -1,6 +1,15 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const WelcomeSettings = require('../../models/welcomeSettings');
 
+
+const welcomeMessages = [
+  `¡Bienvenido/a {user} a {server}!`,
+  `¡Hola {user}! ¡Bienvenido/a a {server}!`,
+  `¡{user} se ha unido a {server}!`,
+  `¡Un gran saludo a {user} por unirse a {server}!`,
+  `¡{user} ha llegado a {server}!`
+];
+
 /**
  * @param {import('discord.js').GuildMember} member
  */
@@ -22,19 +31,16 @@ module.exports = async (member) => {
     return;
   }
 
-  const welcomeMessages = [
-    `¡Bienvenido/a ${member.user} a ${member.guild.name}!`,
-    `¡Hola ${member.user}! ¡Bienvenido/a a ${member.guild.name}!`,
-    `¡${member.user} se ha unido a ${member.guild.name}!`,
-    `¡Un gran saludo a ${member.user} por unirse a ${member.guild.name}!`,
-    `¡${member.user} ha llegado a ${member.guild.name}!`
-  ];
+  let messageContent = settings.customWelcomeMessage || 
+    welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
 
-  const randomMessage = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+  messageContent = messageContent
+    .replace(/{user}/g, member.user)
+    .replace(/{server}/g, member.guild.name);
 
   const embed = new EmbedBuilder()
-    .setTitle('¡Bienvenido/a! 🚀')
-    .setDescription(randomMessage)
+    .setTitle('¡Bienvenido/a!')
+    .setDescription(messageContent)
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
     .setFooter({ text: `Ahora somos ${member.guild.memberCount} miembros.` })
     .setColor('Random');

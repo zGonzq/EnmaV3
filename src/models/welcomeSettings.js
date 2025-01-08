@@ -6,6 +6,8 @@ const welcomeSettingsSchema = new mongoose.Schema({
   leaveChannel: { type: String, required: true },
   userRole: { type: String, default: null },
   botRole: { type: String, default: null },
+  customWelcomeMessage: { type: String, default: null },
+  customLeaveMessage: { type: String, default: null }
 });
 
 module.exports = mongoose.models.WelcomeSettings || mongoose.model('WelcomeSettings', welcomeSettingsSchema);
