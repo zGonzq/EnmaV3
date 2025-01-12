@@ -39,8 +39,6 @@ await mongoose.connect(process.env.MONGO_URI);
 
 client.login(process.env.TOKEN);
 
-
-// bot/api.js
 app.get('/api/stats', (req, res) => {
   const stats = {
     servers: client.guilds.cache.size,
