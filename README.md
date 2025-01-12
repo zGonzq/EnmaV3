@@ -18,6 +18,9 @@ EnmaV3 es un bot de Discord desarrollado para proporcionar una variedad de funci
 - **Jikan API**: Para obtener información de anime.
 - **PokeAPI**: Para obtener información de Pokémon.
 - **OpenWeatherMap API**: Para obtener información del clima.
+- **Twitch API**: Para obtener información de streams.
+- **YouTube API**: Para obtener información de vídeos.
+
 
 ## Comandos
 
@@ -38,6 +41,18 @@ EnmaV3 es un bot de Discord desarrollado para proporcionar una variedad de funci
 ### Moderación
 - `/timeout`: Silencia a un usuario.
 - `/clear`: Limpia los mensajes del chat.
+- `/kick`: Expulsa a un usuario del servidor.
+- `/ban`: Prohíbe a un usuario del servidor.
+- `/unban`: Elimina la prohibición de un usuario del servidor.
+- `/warn`: Advierte a un usuario.
+- `/history`: Muestra el historial de advertencias de un usuario.
+- `/cleanhistory`: Elimina todas las advertencias de un usuario.
+- `/slowmode`: Establece el modo lento en un canal.
+- `/lock`: Bloquea un canal.
+- `/unlock`: Desbloquea un canal.
+- `/purge`: Elimina mensajes de un usuario específico.
+- `/nick`: Cambia el apodo de un usuario.
+- `/unwarn`: Elimina una advertencia de un usuario.
 
 ### Diversión
 - `/8ball`: Hazle una pregunta a la bola mágica.
@@ -50,6 +65,7 @@ EnmaV3 es un bot de Discord desarrollado para proporcionar una variedad de funci
 - `/randomanime`: Recomienda un anime aleatorio.
 - `/findpokemon`: Busca información de un Pokémon específico.
 - `/weather`: Obtiene el clima de una ciudad específica.
+- `/notifications`: Gestiona las notificaciones twitch y youtube.
 
 ### Utilidades
 - `/help`: Muestra la lista de comandos organizados por categorías.
@@ -58,13 +74,23 @@ EnmaV3 es un bot de Discord desarrollado para proporcionar una variedad de funci
 - `/embed`: Crea un embed personalizado.
 - `/emoji`: Obtener el png de un emoji.
 - `/cumpleanos`: Gestiona tu fecha de cumpleaños.
-- `/invite`: Invita al bot a tu servidor.
+
 
 ### Administración
 - `/setshop`: Gestiona la tienda de roles.
 - `/giveall`: Añade un rol a todos los usuarios o bots del servidor.
 - `/logs`: Gestiona los logs del servidor.
 - `/welcomemsg`: Configura los mensajes de bienvenida y despedida.
+- `/autorole`: Configura autoroles para los usuarios.
+- `/automoderator`: Configura el auto moderador del servidor.
+
+### General
+- `/invite`: Invita al bot a tu servidor.
+- `/ping`: Muestra la latencia del bot.
+- `/emojilist`: Muestra la lista de emojis del servidor.
+
+### Automáticos
+- `/dailyanime`: Recomienda un anime aleatorio diariamente.
 
 ### Desarrollo
 - `/reload`: Recarga algunos archivos del bot.

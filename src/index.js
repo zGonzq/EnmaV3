@@ -7,6 +7,10 @@ const mongoose = require('mongoose');
 const { DisTube } = require('distube');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
 
+const express = require('express');
+const app = express();
+const os = require('os');
+
 const client = new Client({
     intents: Object.values(GatewayIntentBits)
 });
@@ -34,3 +38,20 @@ mongoose.set('strictQuery', false);
 await mongoose.connect(process.env.MONGO_URI);
 
 client.login(process.env.TOKEN);
+
+
+// bot/api.js
+app.get('/api/stats', (req, res) => {
+  const stats = {
+    servers: client.guilds.cache.size,
+    users: client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
+    channels: client.channels.cache.size,
+    uptime: client.readyAt.toLocaleString(),
+  };
+  
+  res.json(stats);
+});
+
+app.listen(3000, () => {
+  console.log('API running on port 3000');
+});
