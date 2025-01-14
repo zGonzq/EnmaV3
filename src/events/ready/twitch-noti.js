@@ -27,6 +27,7 @@ module.exports = async (client) => {
                     const userExists = await checkTwitchUser(twitchUser.username);
                     if (!userExists) {
                         console.log(`Usuario de Twitch no encontrado: ${twitchUser.username}`);
+                        continue;
                     }
                 } catch (error) {
                     console.error(`Error al verificar si el usuario de Twitch existe:`, error.message);
