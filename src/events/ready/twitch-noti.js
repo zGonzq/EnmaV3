@@ -23,11 +23,14 @@ module.exports = async (client) => {
 
             for (const twitchUser of notification.twitch) {
                 try {
+                    try { 
                     const userExists = await checkTwitchUser(twitchUser.username);
                     if (!userExists) {
                         console.log(`Usuario de Twitch no encontrado: ${twitchUser.username}`);
-                        continue;
                     }
+                } catch (error) {
+                    console.error(`Error al verificar si el usuario de Twitch existe:`, error.message);
+                }
 
                     const [avatar, game, title, uptime] = await Promise.all([
                         axios.get(`https://decapi.me/twitch/avatar/${twitchUser.username}`),
