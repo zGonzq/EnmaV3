@@ -10,6 +10,7 @@ module.exports = (client) => {
         { name: `Con ${userCount} usuarios. 🌍`, type: ActivityType.Watching },
         { name: `Obten ayuda /help. 💡`, type: ActivityType.Playing },
         { name: `Última actualización: Autoroles 📌`, type: ActivityType.Listening },
+        { name: `Página web: gleal.cl/enma 🌐`, type: ActivityType.Streaming },
 
     ];
     
