@@ -9,13 +9,6 @@ module.exports = (client) => {
   const embed = new EmbedBuilder().setColor("Red");
 
   client.on("error", (err) => {
-    if (err.message.includes('TimeoutNegativeWarning')) {
-      // Ignorar el error TimeoutNegativeWarning
-      console.warn('TimeoutNegativeWarning ignorado');
-      return;
-    }});
-
-  client.on("error", (err) => {
     console.log(err);
 
     embed
