@@ -1,28 +1,21 @@
 const { EmbedBuilder, WebhookClient } = require("discord.js");
 const { inspect } = require("util");
-
 const webhook = new WebhookClient({
   url: "https://discord.com/api/webhooks/1175932188722745354/Qbfm6F7rxq8Fegb8BVqLrkZvbhhDuztSaH9j6lfH8byYDsfUxtxMwC5i3rRX0H2yvO6c",
 });
-
 module.exports = (client) => {
   const embed = new EmbedBuilder().setColor("Red");
-
   client.on("error", (err) => {
     console.log(err);
-
     embed
       .setTitle("Discord API Error")
       .setURL("https://discordjs.guide/popular-topics/errors.html#api-errors")
       .setDescription(`\`\`\`${inspect(err, { depth: 0 }).slice(0, 1000)}\`\`\``)
       .setTimestamp();
-
     return webhook.send({ embeds: [embed] });
   });
-
   process.on("unhandledRejection", (reason, promise) => {
     console.log(reason, "\n", promise);
-
     embed
       .setTitle("Unhandled Rejection/Catch")
       .setURL("https://nodejs.org/api/process.html#event-unhandledrejection")
@@ -37,13 +30,10 @@ module.exports = (client) => {
         }
       )
       .setTimestamp();
-
     return webhook.send({ embeds: [embed] });
   });
-
   process.on("uncaughtException", (err, origin) => {
     console.log(err, "\n", origin);
-
     embed
       .setTitle("Uncaught Exception/Catch")
       .setURL("https://nodejs.org/api/process.html#event-uncaughtexception")
@@ -58,13 +48,10 @@ module.exports = (client) => {
         }
       )
       .setTimestamp();
-
     return webhook.send({ embeds: [embed] });
   });
-
   process.on("uncaughtExceptionMonitor", (err, origin) => {
     console.log(err, "\n", origin);
-
     embed
       .setTitle("Uncaught Exception Monitor")
       .setURL("https://nodejs.org/api/process.html#event-uncaughtexceptionmonitor")
@@ -79,13 +66,10 @@ module.exports = (client) => {
         }
       )
       .setTimestamp();
-
     return webhook.send({ embeds: [embed] });
   });
-
   process.on("warning", (warn) => {
     console.log(warn);
-
     embed
       .setTitle("Warning")
       .setURL("https://nodejs.org/api/process.html#event-warning")
@@ -94,7 +78,6 @@ module.exports = (client) => {
         value: `\`\`\`${inspect(warn, { depth: 0 }).slice(0, 1000)}\`\`\``,
       })
       .setTimestamp();
-
     return webhook.send({ embeds: [embed] });
   });
 };
